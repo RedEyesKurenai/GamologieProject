@@ -1,0 +1,34 @@
+﻿<Properties StartupConfiguration="{CAC26922-3AED-3C52-4B52-C9AF886CB59A}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scenes/Scripts/Character_AI.cs">
+    <Files>
+      <File FileName="Assets/Scenes/Scripts/PlayerLife.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scenes/Scripts/Character_AI.cs" Line="55" Column="10" />
+      <File FileName="Assets/Scenes/Scripts/PlayerMovement.cs" />
+      <File FileName="Assets/Scenes/Scripts/StickyPlatform.cs" />
+      <File FileName="Assets/Scenes/Scripts/Rotate.cs" />
+      <File FileName="Assets/Scenes/Scripts/ItemCollector.cs" />
+      <File FileName="Assets/Scenes/Scripts/AI.cs" />
+      <File FileName="Assets/Scenes/Scripts/WaypointFollower.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Gamologie" expanded="True">
+            <Node name="Assets" expanded="True" selected="True">
+              <Node name="Scenes" expanded="True">
+                <Node name="Scripts" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3a73f0a5-f441-4a8a-844a-7f018ffa5c1a" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
