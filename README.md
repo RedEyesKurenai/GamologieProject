@@ -1,1 +1,1 @@
-# GamologiePrioject
+# GamologieProject
