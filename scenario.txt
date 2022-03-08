@@ -1,0 +1,29 @@
+IDEE: clash ROYAL
+=> jeu de stratégie en temps réel 
+monde medievial
+
+SCENARIO RPG :
+4 personnages à comportement different:
+- archer attaque à distance
+- epeiste attaque corps à corps
+- mage soigne
+- tank enlève beaucoup de vie
+
+=> but:recuperer les tresors dans le plus de  batiments (mini batiment)
+FIN: destination FINALE : un batiment
+
+
+( des ressources à recuperer 
+- eau
+- gibier
+BONUS ils REgagnent en vie <3 <3 <3 )
+
+obstacle:
+foret
+rocher  
+piege
+
+2ieme etape:
+donjon: attaque groupée
+
+=> map 3D
