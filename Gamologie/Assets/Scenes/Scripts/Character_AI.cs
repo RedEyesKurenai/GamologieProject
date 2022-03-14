@@ -7,7 +7,7 @@ public class Character_AI : MonoBehaviour
     [SerializeField] GameObject waypoint;
     [SerializeField] LayerMask whatIsGround;
     [SerializeField] LayerMask player;
-    [SerializeField] float Speed = 1f;
+    [SerializeField] float Speed = 4f;
     Animator animator;
     
 
@@ -20,7 +20,7 @@ public class Character_AI : MonoBehaviour
     //Patroling
     private Vector3 walkPoint;
     public bool walkPointSet;
-    public float walkPointRange;
+    public float walkPointRange = 0f;
 
     //Attacking
     public float timeBetweenAttacks;
@@ -65,8 +65,8 @@ public class Character_AI : MonoBehaviour
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
         //Walkpoint reached
-        if (distanceToWalkPoint.magnitude < 1f)
-            walkPointSet = false;
+         if (distanceToWalkPoint.magnitude < 1f)
+             walkPointSet = false;
     }
 
     private void SearchWalkPoint()
@@ -78,7 +78,7 @@ public class Character_AI : MonoBehaviour
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-            walkPointSet = true;
+           walkPointSet = true;
     }
 
     private void ChasePlayer()
@@ -110,6 +110,10 @@ public class Character_AI : MonoBehaviour
             rb.AddForce(transform.up * 8f, ForceMode.Impulse);
             */
             ///End of attack code
+            ///
+
+            Character_AI script_player = waypoint.GetComponent<Character_AI>();
+            script_player.TakeDamage(1);
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
@@ -126,12 +130,14 @@ public class Character_AI : MonoBehaviour
     {
         health -= damage;
 
-        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+        // if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
     }
 
+    /*
     private void DestroyEnemy()
     {
         Destroy(gameObject);
     }
+    */
 
 }
