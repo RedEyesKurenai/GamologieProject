@@ -8,7 +8,7 @@ public class Character_AI : MonoBehaviour
     public NavMeshAgent agent;
 
 
-     public GameObject target;
+     private GameObject target;
      [SerializeField] LayerMask whatIsGround;
      public Animator animator;
 
@@ -29,14 +29,37 @@ public class Character_AI : MonoBehaviour
     //States
     private bool playerInSightRange, playerInAttackRange;
 
+    void Get_Enemy()
+    {
+        List<GameObject> Enemies = new List<GameObject>();
 
+        Transform pere = this.gameObject.transform.parent;
+        Transform grand_pere = pere.parent;
+        foreach (Transform frere in grand_pere)
+        {
+            if (frere.gameObject != this.gameObject)
+            {
+                // Get all nephews (Units).
+                foreach (Transform fils in frere)
+                {
+                    Enemies.Add(fils.gameObject);
+                }
+            }
+        }
+
+        foreach (GameObject temp in Enemies)
+        {
+            target = temp;
+        }
+    }
 
     void Update()
     {
+        Get_Enemy();
+
         float Distance = Vector3.Distance(transform.position, target.transform.position);
 
-
-        if ( (agent.tag == "Team1" && target.tag == "Team2") || (agent.tag == "Team2" && target.tag == "Team1") )
+        if ( (agent.CompareTag("Team1") && target.CompareTag("Team2")) || (agent.CompareTag("Team2") && target.CompareTag("Team1")) )
         {
             if (Distance < radiusChase)
             {

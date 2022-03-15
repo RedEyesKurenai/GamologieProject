@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scenes/Scripts/Character_AI.cs">
     <Files>
       <File FileName="Assets/Scenes/Scripts/PlayerLife.cs" Line="36" Column="54" />
-      <File FileName="Assets/Scenes/Scripts/Character_AI.cs" Line="45" Column="70" />
+      <File FileName="Assets/Scenes/Scripts/Character_AI.cs" Line="45" Column="14" />
       <File FileName="Assets/Scenes/Scripts/PlayerMovement.cs" />
       <File FileName="Assets/Scenes/Scripts/StickyPlatform.cs" />
       <File FileName="Assets/Scenes/Scripts/Rotate.cs" />
@@ -26,7 +26,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d9dfd3a5-959b-42fd-9581-c56d66bb1ffe" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8145c3bf-a84a-4b28-af00-dd291eccd169" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
