@@ -7,7 +7,8 @@ TagManager:
   - Enemy Body
   - Enemy Head
   - Coin
-  - PlayerEyes
+  - Team1
+  - Team2
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - UI
   - Ground
   - Player
-  - Team_A
-  - Team_B
+  - TeamA
+  - TeamB
   - 
   - 
   - 

@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Character_AI : MonoBehaviour
 {
-    [SerializeField] GameObject waypoint;
-    [SerializeField] LayerMask whatIsGround;
-    [SerializeField] LayerMask player;
-    [SerializeField] float Speed = 4f;
-    Animator animator;
-    
+    public NavMeshAgent agent;
+
+
+     public GameObject target;
+     [SerializeField] LayerMask whatIsGround;
+     public Animator animator;
+
 
     public float health;
     public float radiusChase;
     public float radiusAttack;
-
-    //private bool isMoving ;
 
     //Patroling
     private Vector3 walkPoint;
@@ -25,48 +25,62 @@ public class Character_AI : MonoBehaviour
     //Attacking
     public float timeBetweenAttacks;
     public bool alreadyAttacked;
-    public GameObject projectile;
 
     //States
     private bool playerInSightRange, playerInAttackRange;
 
 
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-    }
 
     void Update()
     {
-        
-        //Check for sight and attack range
-        playerInSightRange = Physics.CheckSphere(transform.position, radiusChase, player);
-        playerInAttackRange = Physics.CheckSphere(transform.position, radiusAttack, player);
+        float Distance = Vector3.Distance(transform.position, target.transform.position);
 
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
- 
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+
+        if ( (agent.tag == "Team1" && target.tag == "Team2") || (agent.tag == "Team2" && target.tag == "Team1") )
+        {
+            if (Distance < radiusChase)
+            {
+                playerInSightRange = true;
+
+            }
+            else playerInSightRange = false;
+
+            if (Distance < radiusAttack)
+            {
+                playerInAttackRange = true;
+
+            }
+            else playerInAttackRange = false;
+
+        }
+
+        //Check for sight and attack range
         
-        if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        if (!playerInSightRange && !playerInAttackRange) Patroling();
+
+        if (playerInSightRange && !playerInAttackRange) Chase();
+
+        if (playerInAttackRange && playerInSightRange) Attack();
     }
 
     private void Patroling()
     {
-       // animator.SetBool("isAttacking", false);
+        // animator.SetBool("isAttacking", false);
 
         if (!walkPointSet) SearchWalkPoint();
 
         if (walkPointSet)
+            animator.SetBool("isAttacking", false);
             animator.SetBool("isRunning", true);
             transform.LookAt(walkPoint);
-            transform.position = Vector3.MoveTowards(transform.position, walkPoint, Speed * Time.deltaTime);
-        
-            
+            agent.SetDestination(walkPoint);
+
+
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
         //Walkpoint reached
-         if (distanceToWalkPoint.magnitude < 1f)
-             walkPointSet = false;
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
     }
 
     private void SearchWalkPoint()
@@ -78,41 +92,36 @@ public class Character_AI : MonoBehaviour
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-           walkPointSet = true;
+            walkPointSet = true;
     }
 
-    private void ChasePlayer()
+    private void Chase()
     {
-        //animator.SetBool("isAttacking", false);
+        animator.SetBool("isAttacking", false);
         animator.SetBool("isRunning", true);
-        transform.LookAt(waypoint.transform.position);
-        transform.position = Vector3.MoveTowards(transform.position, waypoint.transform.position, Speed * Time.deltaTime);
+        transform.LookAt(target.transform.position);
+        agent.SetDestination(target.transform.position);
+
     }
 
 
-    private void AttackPlayer()
+    private void Attack()
     {
         //Make sure enemy doesn't move
         animator.SetBool("isRunning", false);
-        transform.position = transform.position;
+        agent.ResetPath();
 
-
-        transform.LookAt(waypoint.transform);
+        
+        transform.LookAt(target.transform.position);
 
         if (!alreadyAttacked)
         {
             ///Attack code here
 
             animator.SetBool("isAttacking", true);
-            /*Projectile
-            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
-            */
-            ///End of attack code
-            ///
+            
 
-            Character_AI script_player = waypoint.GetComponent<Character_AI>();
+            Character_AI script_player = target.GetComponent<Character_AI>();
             script_player.TakeDamage(1);
 
             alreadyAttacked = true;
@@ -130,14 +139,14 @@ public class Character_AI : MonoBehaviour
     {
         health -= damage;
 
-        // if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
     }
 
-    /*
+    
     private void DestroyEnemy()
     {
         Destroy(gameObject);
     }
-    */
+    
 
 }

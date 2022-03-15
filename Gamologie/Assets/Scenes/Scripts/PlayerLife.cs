@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerLife : MonoBehaviour
 {
+    public float health = 10;
     bool dead = false;
 
     private void Update()
@@ -21,6 +22,13 @@ public class PlayerLife : MonoBehaviour
         {
             Die();    
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0) Invoke(nameof(Die), 0.5f);
     }
 
     void Die()
