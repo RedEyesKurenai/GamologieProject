@@ -8,14 +8,15 @@ public class Character_AI : MonoBehaviour
     public NavMeshAgent agent;
 
 
-     private GameObject target;
-     [SerializeField] LayerMask whatIsGround;
-     public Animator animator;
+    private GameObject target;
+    public LayerMask whatIsGround;
+    public Animator animator;
 
 
     public float health;
     public float radiusChase;
     public float radiusAttack;
+    private float Distance;
 
     //Patroling
     private Vector3 walkPoint;
@@ -28,19 +29,20 @@ public class Character_AI : MonoBehaviour
 
     //States
     private bool playerInSightRange, playerInAttackRange;
+    
 
-    void Get_Enemy()
+    public void getEnnemies ()
     {
         List<GameObject> Enemies = new List<GameObject>();
 
         Transform pere = this.gameObject.transform.parent;
         Transform grand_pere = pere.parent;
-        foreach (Transform frere in grand_pere)
+        foreach (Transform sibling in grand_pere)
         {
-            if (frere.gameObject != this.gameObject)
+            if (sibling.gameObject != pere.gameObject)
             {
-                // Get all nephews (Units).
-                foreach (Transform fils in frere)
+                
+                foreach (Transform fils in sibling)
                 {
                     Enemies.Add(fils.gameObject);
                 }
@@ -55,26 +57,31 @@ public class Character_AI : MonoBehaviour
 
     void Update()
     {
-        Get_Enemy();
+        getEnnemies();
 
-        float Distance = Vector3.Distance(transform.position, target.transform.position);
-
-        if ( (agent.CompareTag("Team1") && target.CompareTag("Team2")) || (agent.CompareTag("Team2") && target.CompareTag("Team1")) )
+        if (target != null)
         {
-            if (Distance < radiusChase)
+
+            Distance = Vector3.Distance(transform.position, target.transform.position);
+
+
+            if ((agent.CompareTag("Team1") && target.CompareTag("Team2")) || (agent.CompareTag("Team2") && target.CompareTag("Team1")))
             {
-                playerInSightRange = true;
+                if (Distance < radiusChase)
+                {
+                    playerInSightRange = true;
+
+                }
+                else playerInSightRange = false;
+
+                if (Distance < radiusAttack)
+                {
+                    playerInAttackRange = true;
+
+                }
+                else playerInAttackRange = false;
 
             }
-            else playerInSightRange = false;
-
-            if (Distance < radiusAttack)
-            {
-                playerInAttackRange = true;
-
-            }
-            else playerInAttackRange = false;
-
         }
 
         //Check for sight and attack range
@@ -120,10 +127,13 @@ public class Character_AI : MonoBehaviour
 
     private void Chase()
     {
-        animator.SetBool("isAttacking", false);
-        animator.SetBool("isRunning", true);
-        transform.LookAt(target.transform.position);
-        agent.SetDestination(target.transform.position);
+        if (target != null)
+        {
+            animator.SetBool("isAttacking", false);
+            animator.SetBool("isRunning", true);
+            transform.LookAt(target.transform.position);
+            agent.SetDestination(target.transform.position);
+        }
 
     }
 
@@ -134,21 +144,24 @@ public class Character_AI : MonoBehaviour
         animator.SetBool("isRunning", false);
         agent.ResetPath();
 
-        
-        transform.LookAt(target.transform.position);
-
-        if (!alreadyAttacked)
+        if (target != null)
         {
-            ///Attack code here
 
-            animator.SetBool("isAttacking", true);
-            
+            transform.LookAt(target.transform.position);
 
-            Character_AI script_player = target.GetComponent<Character_AI>();
-            script_player.TakeDamage(1);
+            if (!alreadyAttacked)
+            {
+                ///Attack code here
 
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+                animator.SetBool("isAttacking", true);
+
+
+                Character_AI script_player = target.GetComponent<Character_AI>();
+                script_player.TakeDamage(1);
+
+                alreadyAttacked = true;
+                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }
         }
     }
 
@@ -160,15 +173,18 @@ public class Character_AI : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        
+            health -= damage;
 
-        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+            if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
     }
 
     
     private void DestroyEnemy()
     {
-        Destroy(gameObject);
+        
+            Destroy(gameObject);
+        
     }
     
 

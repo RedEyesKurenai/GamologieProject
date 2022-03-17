@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scenes/Scripts/Character_AI.cs">
     <Files>
       <File FileName="Assets/Scenes/Scripts/PlayerLife.cs" Line="36" Column="54" />
-      <File FileName="Assets/Scenes/Scripts/Character_AI.cs" Line="45" Column="14" />
+      <File FileName="Assets/Scenes/Scripts/Character_AI.cs" Line="132" Column="52" />
       <File FileName="Assets/Scenes/Scripts/PlayerMovement.cs" />
       <File FileName="Assets/Scenes/Scripts/StickyPlatform.cs" />
       <File FileName="Assets/Scenes/Scripts/Rotate.cs" />
@@ -14,9 +14,11 @@
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Gamologie" expanded="True">
-            <Node name="Assets" expanded="True" selected="True">
+            <Node name="Assets" expanded="True">
               <Node name="Scenes" expanded="True">
-                <Node name="Scripts" expanded="True" />
+                <Node name="Scripts" expanded="True">
+                  <Node name="Character_AI.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -26,7 +28,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8145c3bf-a84a-4b28-af00-dd291eccd169" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="7e68fb21-60f4-4830-83cf-70cd89bd4de4" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
