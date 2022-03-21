@@ -7,8 +7,10 @@ public class Character_AI : MonoBehaviour
 {
     public NavMeshAgent agent;
 
+    private List<GameObject> Allies;
 
     private GameObject target;
+    private GameObject companion;
     public LayerMask whatIsGround;
     public Animator animator;
 
@@ -55,9 +57,27 @@ public class Character_AI : MonoBehaviour
         }
     }
 
+    public void getAllies()
+    {
+        Allies = new List<GameObject>();
+
+        Transform pere = this.gameObject.transform.parent;
+        foreach (Transform sibling in pere)
+        {
+            Allies.Add(sibling.gameObject);
+        }
+        /*
+        foreach (GameObject alie in Allies)
+        {
+            companion = alie;
+        }
+        */
+    }
+
     void Update()
     {
         getEnnemies();
+        getAllies();
 
         if (target != null)
         {
