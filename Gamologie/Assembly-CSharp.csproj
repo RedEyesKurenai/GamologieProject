@@ -57,15 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Jammo-Character\Scripts\CharacterSkinController.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Rotate.cs" />
     <Compile Include="Assets\Scenes\Scripts\StickyPlatform.cs" />
     <Compile Include="Assets\Jammo-Character\Scripts\MovementInput.cs" />
-    <Compile Include="Assets\Scenes\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scenes\Scripts\WaypointFollower.cs" />
     <Compile Include="Assets\Scenes\Scripts\Character_AI.cs" />
-    <Compile Include="Assets\Scenes\Scripts\AI.cs" />
-    <Compile Include="Assets\Scenes\Scripts\PlayerLife.cs" />
     <Compile Include="Assets\Scenes\Scripts\ItemCollector.cs" />
+    <Compile Include="Assets\Scenes\Scripts\LeadManagement.cs" />
+    <Compile Include="Assets\Scenes\Scripts\CameraMove.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

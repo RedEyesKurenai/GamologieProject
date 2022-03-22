@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Character_AI : MonoBehaviour
+public class Character_AI : LeadManagement
 {
+    [SerializeField] GameObject CharaAIGameObjet;
+    
+    private int id = 0;
+    
     public NavMeshAgent agent;
 
-    private List<GameObject> Allies;
+    private bool isLeader;
 
-    private GameObject target;
+    protected GameObject target;
     private GameObject companion;
     public LayerMask whatIsGround;
     public Animator animator;
@@ -31,53 +35,20 @@ public class Character_AI : MonoBehaviour
 
     //States
     private bool playerInSightRange, playerInAttackRange;
-    
 
-    public void getEnnemies ()
-    {
-        List<GameObject> Enemies = new List<GameObject>();
+    public bool leaderOrNot() { return isLeader; }
 
-        Transform pere = this.gameObject.transform.parent;
-        Transform grand_pere = pere.parent;
-        foreach (Transform sibling in grand_pere)
-        {
-            if (sibling.gameObject != pere.gameObject)
-            {
-                
-                foreach (Transform fils in sibling)
-                {
-                    Enemies.Add(fils.gameObject);
-                }
-            }
-        }
+    public void makeLeaderOrNot(bool leader) { this.isLeader = leader; }
 
-        foreach (GameObject temp in Enemies)
-        {
-            target = temp;
-        }
-    }
+    public void setId(int id) { this.id = id; }
 
-    public void getAllies()
-    {
-        Allies = new List<GameObject>();
 
-        Transform pere = this.gameObject.transform.parent;
-        foreach (Transform sibling in pere)
-        {
-            Allies.Add(sibling.gameObject);
-        }
-        /*
-        foreach (GameObject alie in Allies)
-        {
-            companion = alie;
-        }
-        */
-    }
 
     void Update()
     {
-        getEnnemies();
         getAllies();
+        getEnnemies();
+        target = Enemies[id - 1];
 
         if (target != null)
         {
@@ -87,12 +58,7 @@ public class Character_AI : MonoBehaviour
 
             if ((agent.CompareTag("Team1") && target.CompareTag("Team2")) || (agent.CompareTag("Team2") && target.CompareTag("Team1")))
             {
-                if (Distance < radiusChase)
-                {
-                    playerInSightRange = true;
-
-                }
-                else playerInSightRange = false;
+                playerInSightRange = true;
 
                 if (Distance < radiusAttack)
                 {
@@ -106,7 +72,7 @@ public class Character_AI : MonoBehaviour
 
         //Check for sight and attack range
         
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
+        // if (!playerInSightRange && !playerInAttackRange) Patroling();
 
         if (playerInSightRange && !playerInAttackRange) Chase();
 
@@ -193,17 +159,17 @@ public class Character_AI : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        
-            health -= damage;
+        health -= damage;
 
-            if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+        if (health <= 0) { 
+            Invoke(nameof(DestroyEnemy), 0.5f); 
+        }
     }
 
     
     private void DestroyEnemy()
     {
-        
-            Destroy(gameObject);
+        Destroy(gameObject);
         
     }
     
