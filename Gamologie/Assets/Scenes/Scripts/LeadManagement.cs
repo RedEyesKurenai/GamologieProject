@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class LeadManagement : MonoBehaviour
 {
@@ -55,7 +56,27 @@ public class LeadManagement : MonoBehaviour
 
     public List<GameObject> getEnemyArray() { return Enemies; }
 
+    public void defineLeader()
+    {
+        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.transform.parent = leaderAlie.transform;
+        sphere.transform.localPosition = new Vector3(0, 2, 0);
+        sphere.transform.localScale = new Vector3(0.25083f, 0.25083f, 0.25083f);
+        sphere.transform.localRotation = new Quaternion(0, 0, 0, 0);
+    }
 
+    public void setLeader()
+    {
+        for(int i = 0; i < Allies.Count; i++)
+        {
+            if(Allies[i] != null)
+            {
+                leaderAlie = Allies[i];
+                defineLeader();
+                break;
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -64,11 +85,12 @@ public class LeadManagement : MonoBehaviour
         Allies = new List<GameObject>();
         getAllies();
         getEnnemies();
+        setLeader();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        setLeader();
     }
 }
