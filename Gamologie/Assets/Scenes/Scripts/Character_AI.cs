@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Character_AI : MonoBehaviour
+public class Character_AI : LeadManagement
 {
     public NavMeshAgent agent;
 
-    private List<GameObject> Allies;
+    public LeadManagement lead;
+
+    public List<GameObject> Allies;
 
     private GameObject target;
-    private GameObject companion;
+    private GameObject nearestAlly;
+    private GameObject tower;
     public LayerMask whatIsGround;
     public Animator animator;
 
@@ -31,134 +34,201 @@ public class Character_AI : MonoBehaviour
 
     //States
     private bool playerInSightRange, playerInAttackRange;
-    
+    private bool towerInAttackRange;
 
-    public void getEnnemies ()
+    private void Start()
     {
-        List<GameObject> Enemies = new List<GameObject>();
+        this.lead = transform.parent.gameObject.GetComponent<LeadManagement>();
+    }
 
-        Transform pere = this.gameObject.transform.parent;
-        Transform grand_pere = pere.parent;
-        foreach (Transform sibling in grand_pere)
+    private void Move(Vector3 position)
+    {
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isRunning", true);
+        transform.LookAt(position);
+        agent.SetDestination(position);
+    }
+
+    private GameObject GetNearestEnemy ()
+    {
+        
+        List<GameObject> enemies = this.lead.GetEnnemies();
+
+        GameObject temp = null;
+        float distMin = Mathf.Infinity;
+        foreach (GameObject any in enemies)
         {
-            if (sibling.gameObject != pere.gameObject)
+            float d = Vector3.Distance(transform.position, any.transform.position);
+            
+            if (d < distMin)
             {
-                
-                foreach (Transform fils in sibling)
+                distMin = d;
+                temp = any;
+            }
+        }
+
+        return temp;
+    }
+
+    private GameObject GetNearestAlly()
+    {
+        Allies = lead.GetComponent<LeadManagement>().GetAllies();
+
+        GameObject temp = null;
+        float distMin = Mathf.Infinity;
+        foreach (GameObject any in Allies)
+        {
+            if (any != transform.gameObject)
+            {
+                float d = Vector3.Distance(transform.position, any.transform.position);
+
+                if (d < distMin)
                 {
-                    Enemies.Add(fils.gameObject);
+                    distMin = d;
+                    temp = any;
                 }
             }
         }
 
-        foreach (GameObject temp in Enemies)
-        {
-            target = temp;
-        }
-    }
-
-    public void getAllies()
-    {
-        Allies = new List<GameObject>();
-
-        Transform pere = this.gameObject.transform.parent;
-        foreach (Transform sibling in pere)
-        {
-            Allies.Add(sibling.gameObject);
-        }
-        /*
-        foreach (GameObject alie in Allies)
-        {
-            companion = alie;
-        }
-        */
+        return temp;
     }
 
     void Update()
     {
-        getEnnemies();
-        getAllies();
+
+        nearestAlly = GetNearestAlly();
+        target = GetNearestEnemy();
 
         if (target != null)
         {
 
             Distance = Vector3.Distance(transform.position, target.transform.position);
-
-
+            
             if ((agent.CompareTag("Team1") && target.CompareTag("Team2")) || (agent.CompareTag("Team2") && target.CompareTag("Team1")))
             {
                 if (Distance < radiusChase)
                 {
                     playerInSightRange = true;
-
+                    CallAlly();
                 }
                 else playerInSightRange = false;
 
                 if (Distance < radiusAttack)
                 {
                     playerInAttackRange = true;
-
                 }
                 else playerInAttackRange = false;
 
             }
         }
+        
 
+        
         //Check for sight and attack range
         
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
+        if (!playerInSightRange && !playerInAttackRange) GoToTower();
 
         if (playerInSightRange && !playerInAttackRange) Chase();
 
-        if (playerInAttackRange && playerInSightRange) Attack();
+        if (playerInAttackRange && playerInSightRange) AttackEnemy();
     }
 
-    private void Patroling()
+    /*
+    private int FilterAllies()
     {
-        // animator.SetBool("isAttacking", false);
+        int indice = 0;
 
-        if (!walkPointSet) SearchWalkPoint();
+        for(int i=0; i < Allies.Capacity; i++)
+        {
+            if(nearestAlly == Allies[i])
+            {
+                indice = i;
+            }
+        }
 
-        if (walkPointSet)
-            animator.SetBool("isAttacking", false);
-            animator.SetBool("isRunning", true);
-            transform.LookAt(walkPoint);
-            agent.SetDestination(walkPoint);
+        return indice;
+    }*/
 
-
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
-
-        //Walkpoint reached
-        if (distanceToWalkPoint.magnitude < 1f)
-            walkPointSet = false;
-    }
-
-    private void SearchWalkPoint()
+    private void CallAlly()
     {
-        //Calculate random point in range
-        float randomZ = Random.Range(-walkPointRange, walkPointRange);
-        float randomX = Random.Range(-walkPointRange, walkPointRange);
-
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-            walkPointSet = true;
+        
+        if ( nearestAlly != null && target != null)
+        {
+            Character_AI script = nearestAlly.gameObject.GetComponent<Character_AI>();
+            script.Move(target.transform.position);
+        }
+        else { GoToTower();  }
     }
+
+
+    private void GoToTower()
+    {
+         animator.SetBool("isAttacking", false);
+
+        if(agent.CompareTag("Team1"))
+        {
+            tower = GameObject.FindGameObjectWithTag("Tower2");
+        }
+
+        if (agent.CompareTag("Team2"))
+        {
+            tower = GameObject.FindGameObjectWithTag("Tower1");
+        }
+
+        if (tower != null)
+        {
+            Move(tower.transform.position);
+
+            float DistanceT = Vector3.Distance(transform.position, tower.transform.position);
+            if (DistanceT < radiusAttack)
+            {
+                AttackTower(tower);
+            }
+        }
+
+
+    }
+
+
+    private void AttackTower( GameObject tower)
+    {
+        //Make sure enemy doesn't move
+        animator.SetBool("isRunning", false);
+        agent.ResetPath();
+
+        if (tower != null)
+        {
+
+            transform.LookAt(tower.transform.position);
+
+            if (!alreadyAttacked)
+            {
+                ///Attack code here
+
+                animator.SetBool("isAttacking", true);
+
+
+                TowerLife scriptTower = tower.GetComponent<TowerLife>();
+                scriptTower.TakeDamage(1);
+
+                alreadyAttacked = true;
+                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }
+        }
+    }
+    
 
     private void Chase()
     {
         if (target != null)
         {
-            animator.SetBool("isAttacking", false);
-            animator.SetBool("isRunning", true);
-            transform.LookAt(target.transform.position);
-            agent.SetDestination(target.transform.position);
+            Move(target.transform.position);
         }
 
     }
 
 
-    private void Attack()
+    private void AttackEnemy()
     {
         //Make sure enemy doesn't move
         animator.SetBool("isRunning", false);
@@ -183,7 +253,12 @@ public class Character_AI : MonoBehaviour
                 Invoke(nameof(ResetAttack), timeBetweenAttacks);
             }
         }
+        else
+        {
+            GoToTower();
+        }
     }
+
 
     private void ResetAttack()
     {
