@@ -56,11 +56,16 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Jammo-Character\Scripts\CharacterSkinController.cs" />
-    <Compile Include="Assets\Scenes\Scripts\CameraMove.cs" />
-    <Compile Include="Assets\Jammo-Character\Scripts\MovementInput.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Character_AI.cs" />
-    <Compile Include="Assets\Scenes\Scripts\LeadManagement.cs" />
+    <Compile Include="Assets\Characters\Jammo-Character\Scripts\CharacterSkinController.cs" />
+    <Compile Include="Assets\Scenes\Scripts\CameraBehabiour\CameraMove.cs" />
+    <Compile Include="Assets\Characters\Jammo-Character\Scripts\MovementInput.cs" />
+    <Compile Include="Assets\Scenes\Scripts\CharacterBehaviour\Character_AI.cs" />
+    <Compile Include="Assets\Scenes\Scripts\Lead\LeadManagement.cs" />
+    <Compile Include="Assets\Scenes\Scripts\DataChara\DataChara.cs" />
+    <Compile Include="Assets\Scenes\Scripts\CharacterBehaviour\Message.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Samples\Terrain Tools\0.1.0-preview\Terrain Assets\ThirdPartyNotices.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
