@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Character_AI : LeadManagement
 {
@@ -46,7 +47,17 @@ public class Character_AI : LeadManagement
     //States
     private bool playerInSightRange, playerInAttackRange;
 
-    
+    //Items collector
+    static int coinsTeam1 ;
+    static int coinsTeam2 ;
+
+    //[SerializeField]
+    [SerializeField]  Text coinsTextTeam1 ;
+    [SerializeField]  Text coinsTextTeam2 ;
+
+
+
+
 
     public void importData()
     {
@@ -115,6 +126,11 @@ public class Character_AI : LeadManagement
 
     void Start()
     {
+
+        //Item initial
+        coinsTeam1 = 0;
+        coinsTeam2 = 0;
+
         this.lead = transform.parent.gameObject.GetComponent<LeadManagement>();
         initial_health = health;
 
@@ -187,6 +203,52 @@ public class Character_AI : LeadManagement
         if (playerInSightRange && !playerInAttackRange) Chase();
 
         if (playerInAttackRange && playerInSightRange) Attack();
+    }
+
+
+    //Items Coins touched
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+            if (agent.CompareTag("Team1"))
+            {
+                coinsTeam1= coinsTeam1 +100;
+                Debug.Log("+1 coin for Team 1");
+                coinsTextTeam1.text = "Team 1 Coins :" + coinsTeam1;
+                Debug.Log(coinsTeam1 + "Team 1");
+            }
+            if (agent.CompareTag("Team2"))
+            {
+                coinsTeam2= coinsTeam2 +100;
+                Debug.Log("+1 coin for Team 2");
+                coinsTextTeam2.text = "Team 2 Coins :" + coinsTeam2;
+                Debug.Log(coinsTeam2 + "Team 1");
+            }
+
+        }
+
+        int health_ecart =(int) (health * 0.1) ; //10% de la sante
+
+        if (other.gameObject.CompareTag("Hlth"))
+       {
+           Destroy(other.gameObject);
+            health =   Mathf.Min(health + health_ecart, maxHealth); //rajouter 10% de vie
+           Debug.Log("+10% health");
+       }
+
+       if (other.gameObject.CompareTag("Poison"))
+       {
+           Destroy(other.gameObject);
+           health = Mathf.Max(health - health_ecart, 0); //enlever 10% de vie
+            Debug.Log("-10% health");
+            if (health <= 0)
+            {
+              Invoke(nameof(DestroyEnemy), 0.1f);
+            }
+       }
+
     }
 
     private void GoToTower()
