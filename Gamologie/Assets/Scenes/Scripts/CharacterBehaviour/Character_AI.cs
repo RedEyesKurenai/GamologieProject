@@ -13,6 +13,10 @@ public class Character_AI : LeadManagement
     
     public NavMeshAgent agent;
 
+    public DataChara datachara;
+    public string nom;
+    public int damage;
+
     public List<Message> localLetterBox;
 
     public bool isLeader;
@@ -24,6 +28,7 @@ public class Character_AI : LeadManagement
 
 
     public float health;
+    public float maxHealth;
     public float radiusChase;
     public float radiusAttack;
     private float Distance;
@@ -39,6 +44,16 @@ public class Character_AI : LeadManagement
 
     //States
     private bool playerInSightRange, playerInAttackRange;
+
+    public void importData()
+    {
+        nom = datachara.charaName;
+        maxHealth = datachara.maxHealth;
+        damage = datachara.damage;
+        timeBetweenAttacks = datachara.timeBetweenAttack;
+        agent.speed = datachara.speed;
+        health = maxHealth;
+    }
 
     public bool leaderOrNot() { return isLeader; }
 
@@ -88,6 +103,9 @@ public class Character_AI : LeadManagement
 
     void Start()
     {
+        if (datachara != null)
+            importData();
+        
         localLetterBox = new List<Message>();
         /*
         if (isLeader)
@@ -206,7 +224,7 @@ public class Character_AI : LeadManagement
 
 
                 Character_AI script_player = target.GetComponent<Character_AI>();
-                script_player.TakeDamage(1);
+                script_player.TakeDamage(this.damage);
 
                 alreadyAttacked = true;
                 Invoke(nameof(ResetAttack), timeBetweenAttacks);

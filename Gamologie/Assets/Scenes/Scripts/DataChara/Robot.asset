@@ -15,5 +15,5 @@ MonoBehaviour:
   charaName: Robot
   maxHealth: 5
   damage: 1
-  speedRunning: 0
-  speedDamage: 0
+  speed: 3.5
+  timeBetweenAttack: 0.7

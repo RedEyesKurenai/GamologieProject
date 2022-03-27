@@ -6,8 +6,8 @@ using UnityEngine;
 public class DataChara : ScriptableObject
 {
     public string charaName;
-    public int maxHealth;
+    public float maxHealth;
     public int damage;
-    public int speedRunning;
-    public int speedDamage;
+    public float speed;
+    public float timeBetweenAttack;
 }
