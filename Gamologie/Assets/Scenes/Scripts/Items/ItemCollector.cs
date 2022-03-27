@@ -37,7 +37,7 @@ public class ItemCollector : MonoBehaviour
             healthText.text = "Health :" + health;
             if(health<=0)
             {
-                ReloadLevel();
+                //ReloadLevel();
             }
         }
 

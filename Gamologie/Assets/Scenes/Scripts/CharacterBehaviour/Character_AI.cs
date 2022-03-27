@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Character_AI : LeadManagement
 {
@@ -44,6 +45,19 @@ public class Character_AI : LeadManagement
 
     //States
     private bool playerInSightRange, playerInAttackRange;
+
+    //Items collector
+    int coinsTeam1 = 0;
+    int coinsTeam2 = 0;
+
+    public Text coinsTextTeam1 ;
+    public Text coinsTextTeam2 ;
+
+
+
+
+
+
 
     public void importData()
     {
@@ -103,6 +117,7 @@ public class Character_AI : LeadManagement
 
     void Start()
     {
+
         if (datachara != null)
             importData();
         
@@ -159,6 +174,54 @@ public class Character_AI : LeadManagement
 
         if (playerInAttackRange && playerInSightRange) Attack();
     }
+
+
+    //Items Coins touched
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+            if (agent.CompareTag("Team1"))
+            {
+                coinsTeam1++;
+                Debug.Log("+1 coin for Team 1");
+                coinsTextTeam1.text = "Team 1 Coins :" + coinsTeam1;
+            }
+            if (agent.CompareTag("Team2"))
+            {
+                coinsTeam2++;
+                Debug.Log("+1 coin for Team 2");
+                coinsTextTeam2.text = "Team 2 Coins :" + coinsTeam2;
+            }
+
+        }
+
+         /*if (other.gameObject.CompareTag("Hlth"))
+        {
+            Destroy(other.gameObject);
+            health = Mathf.Min(health + 100, 1000);
+            Debug.Log("+100 health");
+            healthText.text = "Health :" + health;
+        }
+
+        if (other.gameObject.CompareTag("Poison"))
+        {
+            Destroy(other.gameObject);
+            health = Mathf.Max(health - 100, 0);
+            Debug.Log("-100 health");
+            healthText.text = "Health :" + health;
+            if (health <= 0)
+            {
+                //ReloadLevel();
+            }
+        }*/
+
+    }
+
+       
+
+
 
     private void Patroling()
     {
