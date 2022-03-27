@@ -56,16 +56,18 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Jammo-Character\Scripts\CharacterSkinController.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Rotate.cs" />
-    <Compile Include="Assets\Scenes\Scripts\StickyPlatform.cs" />
-    <Compile Include="Assets\Jammo-Character\Scripts\MovementInput.cs" />
-    <Compile Include="Assets\Scenes\Scripts\PlayerMovement.cs" />
-    <Compile Include="Assets\Scenes\Scripts\WaypointFollower.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Character_AI.cs" />
-    <Compile Include="Assets\Scenes\Scripts\AI.cs" />
-    <Compile Include="Assets\Scenes\Scripts\PlayerLife.cs" />
-    <Compile Include="Assets\Scenes\Scripts\ItemCollector.cs" />
+    <Compile Include="Assets\Characters\Jammo-Character\Scripts\CharacterSkinController.cs" />
+    <Compile Include="Assets\Scenes\Scripts\CameraBehabiour\CameraMove.cs" />
+    <Compile Include="Assets\Scenes\Scripts\CharacterBehaviour\Message.cs" />
+    <Compile Include="Assets\Characters\Jammo-Character\Scripts\MovementInput.cs" />
+    <Compile Include="Assets\Scenes\Scripts\DataChara\DataChara.cs" />
+    <Compile Include="Assets\Scenes\Scripts\CharacterBehaviour\Character_AI.cs" />
+    <Compile Include="Assets\Scenes\Scripts\Lead\LeadManagement.cs" />
+    <Compile Include="Assets\Scenes\Scripts\RotateSkybox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Fantasy Skybox FREE\Readme.txt" />
+    <None Include="Assets\Fantasy Skybox FREE\ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
