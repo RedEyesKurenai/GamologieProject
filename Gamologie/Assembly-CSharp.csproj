@@ -61,6 +61,8 @@
     <Compile Include="Assets\Scenes\Scripts\DataChara\DataChara.cs" />
     <Compile Include="Assets\Scenes\Scripts\CharacterBehaviour\Character_AI.cs" />
     <Compile Include="Assets\Scenes\Scripts\Lead\LeadManagement.cs" />
+    <Compile Include="Assets\Scenes\Scripts\Items\Rotate.cs" />
+    <Compile Include="Assets\Scenes\Scripts\Items\ItemCollector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fantasy Skybox FREE\Readme.txt" />
