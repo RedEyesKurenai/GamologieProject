@@ -26,6 +26,11 @@ public class Character_AI : LeadManagement
     public LayerMask whatIsGround;
     public Animator animator;
 
+    private GameObject towerEnemy;
+    private GameObject towerAlly;
+    private GameObject respawnPoint;
+    private float initial_health;
+
 
     public float health;
     public float maxHealth;
@@ -33,10 +38,6 @@ public class Character_AI : LeadManagement
     public float radiusAttack;
     private float Distance;
 
-    //Patroling
-    private Vector3 walkPoint;
-    public bool walkPointSet;
-    public float walkPointRange = 0f;
 
     //Attacking
     public float timeBetweenAttacks;
@@ -44,6 +45,8 @@ public class Character_AI : LeadManagement
 
     //States
     private bool playerInSightRange, playerInAttackRange;
+
+    
 
     public void importData()
     {
@@ -63,7 +66,7 @@ public class Character_AI : LeadManagement
 
     public GameObject GetEnemy()
     {
-        List<GameObject> enemies = getEnnemies();
+        List<GameObject> enemies = this.lead.getEnnemies();
         
         GameObject temp = null;
         float distMin = Mathf.Infinity;
@@ -78,6 +81,7 @@ public class Character_AI : LeadManagement
         }
         return temp;
     }
+
     public void sendMessage(int id, int dest, int subject, string content)
     {
         //Message message = new Message(id, dest, false, subject, content);
@@ -101,8 +105,33 @@ public class Character_AI : LeadManagement
         return boitAuLettre;
     }
 
+    private void Move(Vector3 position)
+    {
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isRunning", true);
+        transform.LookAt(position);
+        agent.SetDestination(position);
+    }
+
     void Start()
     {
+        this.lead = transform.parent.gameObject.GetComponent<LeadManagement>();
+        initial_health = health;
+
+        if (agent.CompareTag("Team1"))
+        {
+            towerEnemy = GameObject.FindGameObjectWithTag("Tower2");
+            towerAlly = GameObject.FindGameObjectWithTag("Tower1");
+            respawnPoint = GameObject.Find("RespawnPoint1");
+        }
+
+        if (agent.CompareTag("Team2"))
+        {
+            towerEnemy = GameObject.FindGameObjectWithTag("Tower1");
+            towerAlly = GameObject.FindGameObjectWithTag("Tower2");
+            respawnPoint = GameObject.Find("RespawnPoint2");
+        }
+
         if (datachara != null)
             importData();
         
@@ -124,8 +153,8 @@ public class Character_AI : LeadManagement
 
     void Update()
     {
-        Allies = getAllies();
-        Enemies = getEnnemies();
+        Allies = this.lead.getAllies();
+        Enemies = this.lead.getEnnemies();
         globalLetterBox = lead.globalLetterBox;
         localLetterBox = receiveMessage();
         //target = Enemies[id - 1];
@@ -153,53 +182,66 @@ public class Character_AI : LeadManagement
 
         //Check for sight and attack range
         
-        // if (!playerInSightRange && !playerInAttackRange) Patroling();
+        if (!playerInSightRange && !playerInAttackRange) GoToTower();
 
         if (playerInSightRange && !playerInAttackRange) Chase();
 
         if (playerInAttackRange && playerInSightRange) Attack();
     }
 
-    private void Patroling()
+    private void GoToTower()
     {
-        // animator.SetBool("isAttacking", false);
-
-        if (!walkPointSet) SearchWalkPoint();
-
-        if (walkPointSet)
-            animator.SetBool("isAttacking", false);
-            animator.SetBool("isRunning", true);
-            transform.LookAt(walkPoint);
-            agent.SetDestination(walkPoint);
+        animator.SetBool("isAttacking", false);
 
 
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        //Walkpoint reached
-        if (distanceToWalkPoint.magnitude < 1f)
-            walkPointSet = false;
+        if (towerEnemy != null)
+        {
+            Move(towerEnemy.transform.position);
+
+            float DistanceT = Vector3.Distance(transform.position, towerEnemy.transform.position);
+            if (DistanceT < radiusAttack)
+            {
+                AttackTower(towerEnemy);
+            }
+        }
+
+
     }
 
-    private void SearchWalkPoint()
+
+    private void AttackTower(GameObject tower)
     {
-        //Calculate random point in range
-        float randomZ = Random.Range(-walkPointRange, walkPointRange);
-        float randomX = Random.Range(-walkPointRange, walkPointRange);
+        //Make sure enemy doesn't move
+        animator.SetBool("isRunning", false);
+        agent.ResetPath();
 
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        if (tower != null)
+        {
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-            walkPointSet = true;
+            transform.LookAt(tower.transform.position);
+
+            if (!alreadyAttacked)
+            {
+                ///Attack code here
+
+                animator.SetBool("isAttacking", true);
+
+
+                TowerLife scriptTower = tower.GetComponent<TowerLife>();
+                scriptTower.TakeDamage(1);
+
+                alreadyAttacked = true;
+                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }
+        }
     }
 
     private void Chase()
     {
         if (target != null)
         {
-            animator.SetBool("isAttacking", false);
-            animator.SetBool("isRunning", true);
-            transform.LookAt(target.transform.position);
-            agent.SetDestination(target.transform.position);
+            Move(target.transform.position);
         }
 
     }
@@ -230,6 +272,10 @@ public class Character_AI : LeadManagement
                 Invoke(nameof(ResetAttack), timeBetweenAttacks);
             }
         }
+        else
+        {
+            GoToTower();
+        }
     }
 
     private void ResetAttack()
@@ -243,11 +289,18 @@ public class Character_AI : LeadManagement
         health -= damage;
 
         if (health <= 0) { 
-            Invoke(nameof(DestroyEnemy), 0.5f); 
+            Invoke(nameof(DestroyEnemy), 0.1f); 
         }
     }
 
-    
+    private void Respawn()
+    {
+
+        agent.transform.position = respawnPoint.transform.position;
+        health = initial_health;
+
+    }
+
     private void DestroyEnemy()
     {
         Destroy(gameObject);

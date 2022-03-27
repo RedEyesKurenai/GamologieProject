@@ -7,7 +7,7 @@ public class LeadManagement : MonoBehaviour
 {
     private int nb = 0;
 
-    [SerializeField] GameObject ceGameObjet;
+    //[SerializeField] GameObject ceGameObjet;
 
     public List<Message> globalLetterBox;
 
@@ -27,10 +27,10 @@ public class LeadManagement : MonoBehaviour
     public List<GameObject> getEnnemies()
     {
         List<GameObject> enemies = new List<GameObject>();
-        Transform pere = ceGameObjet.transform.parent;
+        Transform pere = this.gameObject.transform.parent;
         foreach (Transform sibling in pere)
         {
-            if (sibling.gameObject != ceGameObjet)
+            if (sibling.gameObject != this.gameObject)
             {
                 foreach (Transform fils in sibling)
                 {
@@ -51,7 +51,7 @@ public class LeadManagement : MonoBehaviour
     public List<GameObject> getAllies()
     {
         List<GameObject> allies = new List<GameObject>();
-        foreach (Transform sibling in ceGameObjet.transform)
+        foreach (Transform sibling in this.gameObject.transform)
         {
             allies.Add(sibling.gameObject);
         }
@@ -60,7 +60,7 @@ public class LeadManagement : MonoBehaviour
 
     public void giveId()
     {
-        foreach (Transform sibling in ceGameObjet.transform)
+        foreach (Transform sibling in this.gameObject.transform)
         {
             nb++;
             sibling.gameObject.GetComponent<Character_AI>().setId(nb);
