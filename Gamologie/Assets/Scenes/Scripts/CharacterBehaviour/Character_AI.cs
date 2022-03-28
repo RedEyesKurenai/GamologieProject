@@ -39,6 +39,9 @@ public class Character_AI : LeadManagement
     public float radiusAttack;
     private float Distance;
 
+    //HealthBar
+    public HealthBar healthbar;
+
 
     //Attacking
     public float timeBetweenAttacks;
@@ -134,6 +137,9 @@ public class Character_AI : LeadManagement
         this.lead = transform.parent.gameObject.GetComponent<LeadManagement>();
         initial_health = health;
 
+        //HealthBar
+        healthbar.SetMaxHealth( (int)maxHealth );
+
         if (agent.CompareTag("Team1"))
         {
             towerEnemy = GameObject.FindGameObjectWithTag("Tower2");
@@ -169,6 +175,10 @@ public class Character_AI : LeadManagement
 
     void Update()
     {
+
+        //Health Bar
+        healthbar.SetHealth((int) health);
+
         Allies = this.lead.getAllies();
         Enemies = this.lead.getEnnemies();
         globalLetterBox = lead.globalLetterBox;
@@ -229,24 +239,21 @@ public class Character_AI : LeadManagement
 
         }
 
-        int health_ecart =(int) (health * 0.1) ; //10% de la sante
+        int health_ecart =(int) (health * 0.5) ; //50% de la sante
 
         if (other.gameObject.CompareTag("Hlth"))
        {
            Destroy(other.gameObject);
-            health =   Mathf.Min(health + health_ecart, maxHealth); //rajouter 10% de vie
-           Debug.Log("+10% health");
+            health =   Mathf.Min(health + health_ecart, maxHealth); //rajouter 50% de vie
+           Debug.Log("+50% health");
        }
 
        if (other.gameObject.CompareTag("Poison"))
        {
            Destroy(other.gameObject);
-           health = Mathf.Max(health - health_ecart, 0); //enlever 10% de vie
-            Debug.Log("-10% health");
-            if (health <= 0)
-            {
-              Invoke(nameof(DestroyEnemy), 0.1f);
-            }
+           this.TakeDamage(health_ecart);
+           Debug.Log("-50% health");
+          
        }
 
     }

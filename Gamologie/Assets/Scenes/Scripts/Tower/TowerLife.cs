@@ -7,8 +7,24 @@ public class TowerLife : MonoBehaviour
 
     public float health;
 
+    //health bar
+    public HealthBar healthbar;
 
-    public void TakeDamage(int damage)
+      void Start()
+    {
+        //HealthBar
+        healthbar.SetMaxHealth( (int)health );
+    }
+
+    void Update()
+    {
+        //Health Bar
+        healthbar.SetHealth((int)health);
+    }
+
+
+
+        public void TakeDamage(int damage)
     {
 
         health -= damage;
