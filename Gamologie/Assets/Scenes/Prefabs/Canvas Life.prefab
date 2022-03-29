@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 7259428495809100596}
   - component: {fileID: 7259428495809100599}
   - component: {fileID: 7259428495809100598}
+  - component: {fileID: 6171775873566184767}
   m_Layer: 5
   m_Name: Canvas Life
   m_TagString: Untagged
@@ -172,6 +173,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6171775873566184767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7259428495809100592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe93af41ec629440a62e2869ba8cd7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7259428496327762343
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.15988609, g: 0.10978807, b: 0.1501297, a: 1}
+  m_IndirectSpecularColor: {r: 0.15992057, g: 0.10961988, b: 0.15015098, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1462,6 +1462,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1799731986}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life (4)
@@ -1862,6 +1866,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 140245301}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life (2)
@@ -5467,6 +5475,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 897191266}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life (3)
@@ -6147,6 +6159,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1143887522}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life (1)
@@ -20147,6 +20163,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1854320965}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life (2)
@@ -31248,6 +31268,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2056953776}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life (1)
@@ -33906,6 +33930,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1262680238}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life
@@ -42211,6 +42239,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 291210033}
     m_Modifications:
+    - target: {fileID: 6171775873566184767, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194228}
     - target: {fileID: 7259428495809100592, guid: 312cee13e40a35645ade1ca3c9b4d385, type: 3}
       propertyPath: m_Name
       value: Canvas Life
