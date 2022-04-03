@@ -54,6 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scenes\Scripts\RotateSkybox.cs" />
+    <Compile Include="Assets\BillboardHealth.cs" />
     <Compile Include="Assets\Scenes\Scripts\Items\ItemCollector.cs" />
     <Compile Include="Assets\Characters\Jammo-Character\Scripts\CharacterSkinController.cs" />
     <Compile Include="Assets\Scenes\Scripts\CameraBehabiour\CameraMove.cs" />
@@ -65,7 +66,6 @@
     <Compile Include="Assets\Scenes\Scripts\Tower\TowerLife.cs" />
     <Compile Include="Assets\Scenes\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scenes\Scripts\Lead\LeadManagement.cs" />
-    <Compile Include="Assets\BillboardHealth.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fantasy Skybox FREE\Readme.txt" />

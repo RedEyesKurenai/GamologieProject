@@ -54,6 +54,9 @@ public class Character_AI : LeadManagement
     static int coinsTeam1 ;
     static int coinsTeam2 ;
 
+    //Avoid Zone
+    List <Vector3> Avoid_zone;
+
     //[SerializeField]
     [SerializeField]  Text coinsTextTeam1 ;
     [SerializeField]  Text coinsTextTeam2 ;
@@ -96,7 +99,7 @@ public class Character_AI : LeadManagement
         return temp;
     }
 
-    public void sendMessage(int id, int dest, int subject, string content)
+    public void sendMessage(int id, int dest, int subject, string content, Vector3 position, GameObject zone)
     {
         //Message message = new Message(id, dest, false, subject, content);
         Message message = ScriptableObject.CreateInstance<Message>();
@@ -105,6 +108,8 @@ public class Character_AI : LeadManagement
         message.isSupported = false;
         message.subject = subject;
         message.content = content;
+        message.position = position;
+        message.zone = zone;
         lead.globalLetterBox.Add(message);
     }
 
@@ -133,6 +138,9 @@ public class Character_AI : LeadManagement
         //Item initial
         coinsTeam1 = 0;
         coinsTeam2 = 0;
+
+        //Avoid Zone initial
+        Avoid_zone = new List<Vector3>();
 
         this.lead = transform.parent.gameObject.GetComponent<LeadManagement>();
         initial_health = health;
@@ -166,9 +174,9 @@ public class Character_AI : LeadManagement
         }
         */
         if(this.id == 2)
-            sendMessage(this.id, 3, (int)Content.BEGIN, "start");
+            sendMessage(this.id, 3, (int)Subject.BEGIN, "start", Vector3.zero, null);
         if (this.id == 2)
-            sendMessage(this.id, 1, (int)Content.TEST, "test");
+            sendMessage(this.id, 1, (int)Subject.TEST, "test", Vector3.zero, null );
         localLetterBox = receiveMessage();
 
     }
@@ -177,7 +185,7 @@ public class Character_AI : LeadManagement
     {
 
         //Health Bar
-        healthbar.SetHealth((int) health);
+        healthbar.SetHealth((int)health);
 
         Allies = this.lead.getAllies();
         Enemies = this.lead.getEnnemies();
@@ -207,37 +215,94 @@ public class Character_AI : LeadManagement
         }
 
         //Check for sight and attack range
-        
+
         if (!playerInSightRange && !playerInAttackRange) GoToTower();
 
         if (playerInSightRange && !playerInAttackRange) Chase();
 
         if (playerInAttackRange && playerInSightRange) Attack();
+
+        //Check if in Avoid zone
+        if (Avoid_zone.Count != 0)
+        {
+            foreach (Vector3 z in Avoid_zone)
+            {
+                if (Vector3.Distance(this.transform.position, z) < 0.8)
+                {
+                    Vector3 diff = z - this.transform.position; //Arrivé - départ : pour avoir le vecteur direct 
+                    Vector3 rotatedVector;
+                    rotatedVector = Quaternion.AngleAxis(90, Vector3.left) * diff;
+                    Move(rotatedVector);//tourner de 90 degré pour eviter l'objet et continuer les chemin
+                    
+                }
+            }
+        }
+
+        //Analysis of the messages
+
+        foreach (Message m in localLetterBox)
+        {
+            if (!m.isSupported)
+            {
+                if (m.subject == (int)Subject.HEALTH_MOVE_AT)
+                {
+                    if (health < maxHealth)
+                    {
+                        int pills_health_number = m.zone.transform.childCount;
+                        if (pills_health_number > 0)
+                        {
+                            if (Vector3.Distance(transform.position, m.zone.transform.GetChild(pills_health_number - 1).position) > 1)
+                            {
+                                Move(m.zone.transform.GetChild(pills_health_number - 1).position);
+                               
+                            }
+
+                            else
+                            {
+                                m.isSupported = true;
+                            }
+                        }
+                        else
+                        {
+                            m.isSupported = true;
+                        }
+
+                    }                    
+                }
+
+                if (m.subject == (int)Subject.POISON_AVOID_THIS)
+                {
+                    Avoid_zone.Add(m.position);
+                    m.isSupported = true;
+                }
+            }
+        }
     }
 
 
     //Items Coins touched
     private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Coin"))
         {
-            Destroy(other.gameObject);
-            if (agent.CompareTag("Team1"))
+            if (other.gameObject.CompareTag("Coin"))
             {
-                coinsTeam1= coinsTeam1 +100;
-                Debug.Log("+1 coin for Team 1");
-                coinsTextTeam1.text = "Team 1 Coins :" + coinsTeam1;
-                Debug.Log(coinsTeam1 + "Team 1");
-            }
-            if (agent.CompareTag("Team2"))
-            {
-                coinsTeam2= coinsTeam2 +100;
-                Debug.Log("+1 coin for Team 2");
-                coinsTextTeam2.text = "Team 2 Coins :" + coinsTeam2;
-                Debug.Log(coinsTeam2 + "Team 1");
-            }
+                Destroy(other.gameObject);
+                if (agent.CompareTag("Team1"))
+                {
+                    coinsTeam1 = coinsTeam1 + 100;
+                    Debug.Log("+1 coin for Team 1");
+                    coinsTextTeam1.text = "Team 1 Coins :" + coinsTeam1;
+                    Debug.Log(coinsTeam1 + "Team 1");
+                }
+                if (agent.CompareTag("Team2"))
+                {
+                    coinsTeam2 = coinsTeam2 + 100;
+                    Debug.Log("+1 coin for Team 2");
+                    coinsTextTeam2.text = "Team 2 Coins :" + coinsTeam2;
+                    Debug.Log(coinsTeam2 + "Team 1");
+                }
 
-        }
+            }
+        
 
         int health_ecart =(int) (health * 0.5) ; //50% de la sante
 
@@ -246,15 +311,27 @@ public class Character_AI : LeadManagement
            Destroy(other.gameObject);
             health =   Mathf.Min(health + health_ecart, maxHealth); //rajouter 50% de vie
            Debug.Log("+50% health");
-       }
+            //Envoyer un message à toutes l'équipe que pillule bonus ici et venir si peu de vie 
+            Vector3 health_position= other.transform.position;
+            //envoie à tous le monde de l'équipe 0
+            sendMessage(this.id, 0, (int)Subject.HEALTH_MOVE_AT,"I Found health", health_position, other.transform.parent.gameObject);
+            
+        }
 
        if (other.gameObject.CompareTag("Poison"))
        {
            Destroy(other.gameObject);
            this.TakeDamage(health_ecart);
            Debug.Log("-50% health");
-          
-       }
+
+            //Envoyer un message à toutes l'équipe que pilule mallus ici et éviter à tout prix cette zone
+            Vector3 poison_position = other.transform.position;
+            //envoie à tous le monde de l'équipe 0
+            sendMessage(this.id, 0, (int)Subject.POISON_AVOID_THIS, "I Found poison", poison_position, other.transform.parent.gameObject);
+           
+
+
+        }
 
     }
 
@@ -267,6 +344,7 @@ public class Character_AI : LeadManagement
         if (towerEnemy != null)
         {
             Move(towerEnemy.transform.position);
+            Debug.Log("ICIIIIIXXXX");
 
             float DistanceT = Vector3.Distance(transform.position, towerEnemy.transform.position);
             if (DistanceT < radiusAttack)
@@ -375,6 +453,29 @@ public class Character_AI : LeadManagement
         Destroy(gameObject);
         
     }
-    
+
+
+    //retourne une liste des alliés rangés du plus proche au plus loin de mainUnit, fais avec algo tri bulle
+    /*public List<GameObject> GetAlliesOrderedByDistance(GameObject mainUnit)
+    {
+        List<GameObject> tempUnits = members;
+
+        for (int i = tempUnits.Count - 1; i > 1; i--)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                float d1 = Vector3.Distance(mainUnit.transform.position, tempUnits[j].transform.position) - tempUnits[j].GetComponent<LeaderNPC>().attackRange;
+                float d2 = Vector3.Distance(mainUnit.transform.position, tempUnits[j + 1].transform.position) - tempUnits[j + 1].GetComponent<LeaderNPC>().attackRange;
+                if (d1 > d2)
+                {
+                    GameObject tmp = tempUnits[j];
+                    tempUnits[j] = tempUnits[j + 1];
+                    tempUnits[j + 1] = tmp;
+                }
+            }
+        }
+        return tempUnits;
+    }*/
+
 
 }

@@ -17,11 +17,13 @@ public class LeadManagement : MonoBehaviour
     public GameObject leaderAlie;
     public GameObject leaderEnemi;
 
-    public enum Content
+    public enum Subject
     {
         BEGIN = 0,
         TEST = 1,
-        IS_DEAD = 2
+        IS_DEAD = 2,
+        HEALTH_MOVE_AT = 3,
+        POISON_AVOID_THIS = 4
     }
 
     public List<GameObject> getEnnemies()
