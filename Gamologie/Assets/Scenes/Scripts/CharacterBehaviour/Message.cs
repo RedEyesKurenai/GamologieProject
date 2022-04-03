@@ -9,4 +9,6 @@ public class Message : ScriptableObject
     public bool isSupported;
     public int subject;
     public string content;
+    public Vector3 position;
+    public GameObject zone;
 }
