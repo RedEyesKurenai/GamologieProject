@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scenes\Scripts\RotateSkybox.cs" />
     <Compile Include="Assets\BillboardHealth.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Items\ItemCollector.cs" />
     <Compile Include="Assets\Characters\Jammo-Character\Scripts\CharacterSkinController.cs" />
     <Compile Include="Assets\Scenes\Scripts\CameraBehabiour\CameraMove.cs" />
     <Compile Include="Assets\Scenes\Scripts\CharacterBehaviour\Message.cs" />

@@ -21,6 +21,8 @@ public class Character_AI : LeadManagement
     public List<Message> localLetterBox;
 
     public bool isLeader;
+    public bool isListeningToOrder = false;
+
 
     protected GameObject target;
     private GameObject companion;
@@ -132,6 +134,41 @@ public class Character_AI : LeadManagement
         agent.SetDestination(position);
     }
 
+    public void supportMessage()
+    {
+        foreach (Message m in localLetterBox)
+        {
+            if (!m.isSupported)
+            {
+                isListeningToOrder = true;
+                switch (m.subject)
+                {
+                    case (int)Subject.BEGIN:
+                        {
+                            m.isSupported = true;
+                        }
+                        break;
+                    case (int)Subject.TEST:
+                        {
+                            m.isSupported = true;
+                        }
+                        break;
+                    case (int)Subject.GO_TO_TOWER:
+                        {
+                            GoToTower();
+                            if (towerEnemy.GetComponent<TowerLife>().health <= 0.0f)
+                                m.isSupported = true;
+                        }
+                        break;
+                    default:
+                        isListeningToOrder = false;
+                        break;
+                }
+                isListeningToOrder = false;
+            }
+        }
+    }
+
     void Start()
     {
 
@@ -166,18 +203,36 @@ public class Character_AI : LeadManagement
             importData();
         
         localLetterBox = new List<Message>();
+        if(this.id == 2)
+            sendMessage(this.id, 3, (int)Subject.BEGIN, "start", Vector3.zero, null);
+        if (this.id == 2)
+            sendMessage(this.id, 1, (int)Subject.TEST, "test", Vector3.zero, null );
+
         /*
-        if (isLeader)
+        if (this.isLeader)
         {
             sendMessage(this.id, 0, (int)Content.BEGIN, "start");
             sendMessage(this.id, 2, (int)Content.TEST, "tst");
         }
         */
-        if(this.id == 2)
-            sendMessage(this.id, 3, (int)Subject.BEGIN, "start", Vector3.zero, null);
+        /*
+        if (this.id == 1)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
         if (this.id == 2)
-            sendMessage(this.id, 1, (int)Subject.TEST, "test", Vector3.zero, null );
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        if (this.id == 3)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        if (this.id == 2)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        if (this.id == 1)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        */
+        //if(this.id == 1)
+        //  sendMessage(this.id, 2, (int)Content.SPLIT_TO_TOWER, "nothing more");
+
         localLetterBox = receiveMessage();
+        if (localLetterBox != null)
+            supportMessage();
 
     }
 
@@ -216,14 +271,24 @@ public class Character_AI : LeadManagement
 
         //Check for sight and attack range
 
-        if (!playerInSightRange && !playerInAttackRange) GoToTower();
+        if (!isListeningToOrder)
+        {
+            target = GetEnemy();
 
-        if (playerInSightRange && !playerInAttackRange) Chase();
+            if (!playerInSightRange && !playerInAttackRange) GoToTower();
 
-        if (playerInAttackRange && playerInSightRange) Attack();
+            if (playerInSightRange && !playerInAttackRange) Chase();
+
+            if (playerInAttackRange && playerInSightRange) Attack();
+        }
+        else
+        {
+
+        }
 
         //Check if in Avoid zone
-        if (Avoid_zone.Count != 0)
+        /*
+         * if (Avoid_zone.Count != 0)
         {
             foreach (Vector3 z in Avoid_zone)
             {
@@ -237,6 +302,7 @@ public class Character_AI : LeadManagement
                 }
             }
         }
+        */
 
         //Analysis of the messages
 

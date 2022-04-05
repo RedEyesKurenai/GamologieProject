@@ -23,7 +23,9 @@ public class LeadManagement : MonoBehaviour
         TEST = 1,
         IS_DEAD = 2,
         HEALTH_MOVE_AT = 3,
-        POISON_AVOID_THIS = 4
+        POISON_AVOID_THIS = 4,
+        GO_TO_TOWER = 5
+
     }
 
     public List<GameObject> getEnnemies()
