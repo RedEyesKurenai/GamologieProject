@@ -14,15 +14,19 @@ public class LeadManagement : MonoBehaviour
     public List<GameObject> Allies;
     public List<GameObject> Enemies;
 
+    public List<List<GameObject>> UnderGroups;
+
     public GameObject leaderAlie;
-    public GameObject leaderEnemi;
 
     public enum Content
     {
         BEGIN = 0,
         TEST = 1,
-        IS_DEAD = 2
+        IS_DEAD = 2,
+        GO_TO_TOWER = 3
     }
+
+
 
     public List<GameObject> getEnnemies()
     {
@@ -113,14 +117,15 @@ public class LeadManagement : MonoBehaviour
         globalLetterBox = new List<Message>();
         Allies = getAllies();
         Enemies = getEnnemies();
-        globalLetterBox = globalLetterBoxReloading();
+        //globalLetterBox = globalLetterBoxReloading();
         setLeader();
+        UnderGroups = new List<List<GameObject>>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        globalLetterBox = globalLetterBoxReloading();
+        //globalLetterBox = globalLetterBoxReloading();
         setLeader();
     }
 }

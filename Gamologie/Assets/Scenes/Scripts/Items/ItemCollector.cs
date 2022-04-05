@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ItemCollector : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class ItemCollector : MonoBehaviour
         {
             Destroy(other.gameObject);
             coins++;
-            Debug.Log("+1 coin");
+            // Debug.Log("+1 coin");
             coinsText.text = "Coins :" + coins;
         }
 
@@ -25,7 +26,7 @@ public class ItemCollector : MonoBehaviour
         {
             Destroy(other.gameObject);
             health = Mathf.Min(health + 100, 1000);
-            Debug.Log("+100 health");
+            // Debug.Log("+100 health");
             healthText.text ="Health :" + health;
         }
 
@@ -33,7 +34,7 @@ public class ItemCollector : MonoBehaviour
         {
             Destroy(other.gameObject);
             health = Mathf.Max(health - 100, 0);
-            Debug.Log("-100 health");
+            // Debug.Log("-100 health");
             healthText.text = "Health :" + health;
             if(health<=0)
             {
@@ -45,6 +46,7 @@ public class ItemCollector : MonoBehaviour
 
     void ReloadLevel()
     {
-        Application.LoadLevel(Application.loadedLevel);
+        //Application.LoadLevel(Application.loadedLevel);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

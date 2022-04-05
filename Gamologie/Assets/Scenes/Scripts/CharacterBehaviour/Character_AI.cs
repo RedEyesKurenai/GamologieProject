@@ -21,6 +21,7 @@ public class Character_AI : LeadManagement
     public List<Message> localLetterBox;
 
     public bool isLeader;
+    public bool isListeningToOrder = false;
 
     protected GameObject target;
     private GameObject companion;
@@ -57,10 +58,6 @@ public class Character_AI : LeadManagement
     //[SerializeField]
     [SerializeField]  Text coinsTextTeam1 ;
     [SerializeField]  Text coinsTextTeam2 ;
-
-
-
-
 
     public void importData()
     {
@@ -119,6 +116,46 @@ public class Character_AI : LeadManagement
         return boitAuLettre;
     }
 
+    public void supportMessage()
+    {
+        foreach(Message m in localLetterBox)
+        {
+            if(!m.isSupported)
+            {
+                isListeningToOrder = true;
+                switch (m.subject)
+                {
+                    case (int)Content.BEGIN:
+                        {
+                            m.isSupported = true;
+                        }
+                        break;
+                    case (int)Content.TEST:
+                        {
+                            m.isSupported = true;
+                        }
+                        break;
+                    case (int)Content.GO_TO_TOWER:
+                        {
+                            GoToTower();
+                            if (towerEnemy.GetComponent<TowerLife>().health <= 0.0f)
+                                m.isSupported = true;
+                        }
+                        break;
+                    default:
+                        isListeningToOrder = false;
+                        break;
+                }
+                isListeningToOrder = false;
+            }
+        }
+    }
+
+    public void makeSpecialAction()
+    {
+
+    }
+
     private void Move(Vector3 position)
     {
         animator.SetBool("isAttacking", false);
@@ -158,18 +195,32 @@ public class Character_AI : LeadManagement
             importData();
         
         localLetterBox = new List<Message>();
+        if (this.id == 1)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
         /*
-        if (isLeader)
+        if (this.isLeader)
         {
             sendMessage(this.id, 0, (int)Content.BEGIN, "start");
             sendMessage(this.id, 2, (int)Content.TEST, "tst");
         }
         */
-        if(this.id == 2)
-            sendMessage(this.id, 3, (int)Content.BEGIN, "start");
+        /*
+        if (this.id == 1)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
         if (this.id == 2)
-            sendMessage(this.id, 1, (int)Content.TEST, "test");
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        if (this.id == 3)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        if (this.id == 2)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        if (this.id == 1)
+            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
+        */
+        //if(this.id == 1)
+        //  sendMessage(this.id, 2, (int)Content.SPLIT_TO_TOWER, "nothing more");
         localLetterBox = receiveMessage();
+        if(localLetterBox != null)
+            supportMessage();
 
     }
 
@@ -184,7 +235,9 @@ public class Character_AI : LeadManagement
         globalLetterBox = lead.globalLetterBox;
         localLetterBox = receiveMessage();
         //target = Enemies[id - 1];
-        target = GetEnemy();
+
+        if (localLetterBox != null)
+            supportMessage();
 
         if (target != null)
         {
@@ -207,12 +260,21 @@ public class Character_AI : LeadManagement
         }
 
         //Check for sight and attack range
+        if(!isListeningToOrder)
+        {
+            target = GetEnemy();
+
+            if (!playerInSightRange && !playerInAttackRange) GoToTower();
+
+            if (playerInSightRange && !playerInAttackRange) Chase();
+
+            if (playerInAttackRange && playerInSightRange) Attack();
+        }
+        else
+        {
+
+        }
         
-        if (!playerInSightRange && !playerInAttackRange) GoToTower();
-
-        if (playerInSightRange && !playerInAttackRange) Chase();
-
-        if (playerInAttackRange && playerInSightRange) Attack();
     }
 
 
@@ -225,16 +287,16 @@ public class Character_AI : LeadManagement
             if (agent.CompareTag("Team1"))
             {
                 coinsTeam1= coinsTeam1 +100;
-                Debug.Log("+1 coin for Team 1");
+                // Debug.Log("+1 coin for Team 1");
                 coinsTextTeam1.text = "Team 1 Coins :" + coinsTeam1;
-                Debug.Log(coinsTeam1 + "Team 1");
+                // Debug.Log(coinsTeam1 + "Team 1");
             }
             if (agent.CompareTag("Team2"))
             {
                 coinsTeam2= coinsTeam2 +100;
-                Debug.Log("+1 coin for Team 2");
+                // Debug.Log("+1 coin for Team 2");
                 coinsTextTeam2.text = "Team 2 Coins :" + coinsTeam2;
-                Debug.Log(coinsTeam2 + "Team 1");
+                // Debug.Log(coinsTeam2 + "Team 1");
             }
 
         }
@@ -245,15 +307,14 @@ public class Character_AI : LeadManagement
        {
            Destroy(other.gameObject);
             health =   Mathf.Min(health + health_ecart, maxHealth); //rajouter 50% de vie
-           Debug.Log("+50% health");
+           // Debug.Log("+50% health");
        }
 
        if (other.gameObject.CompareTag("Poison"))
        {
            Destroy(other.gameObject);
            this.TakeDamage(health_ecart);
-           Debug.Log("-50% health");
-          
+           // Debug.Log("-50% health");
        }
 
     }
