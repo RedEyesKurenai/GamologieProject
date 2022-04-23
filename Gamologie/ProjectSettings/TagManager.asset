@@ -9,6 +9,7 @@ TagManager:
   - Coin
   - Team1
   - Team2
+  - PlayerEyes
   - Tower1
   - Tower2
   layers:

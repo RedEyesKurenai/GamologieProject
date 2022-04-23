@@ -1,19 +1,27 @@
 ﻿<Properties StartupConfiguration="{CAC26922-3AED-3C52-4B52-C9AF886CB59A}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scenes/Scripts/Character_AI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scenes/Scripts/CharacterBehaviour/Character_AI.cs">
     <Files>
-      <File FileName="Assets/Scenes/Scripts/Character_AI.cs" Line="147" Column="1" />
-      <File FileName="Assets/Scenes/Scripts/TowerLife.cs" />
-      <File FileName="Assets/Scenes/Scripts/Rotate.cs" />
-      <File FileName="Assets/Scenes/Scripts/ItemCollector.cs" />
-      <File FileName="Assets/Scenes/Scripts/CameraMove.cs" />
+      <File FileName="Assets/Scenes/Scripts/CharacterBehaviour/Character_AI.cs" Line="374" Column="40" />
+      <File FileName="Assets/Scenes/Scripts/Lead/LeadManagement.cs" Line="133" Column="21" />
+      <File FileName="Assets/Scenes/Scripts/CharacterBehaviour/Message.cs" />
+      <File FileName="Assets/Scenes/Scripts/Tower/TowerLife.cs" />
+      <File FileName="Assets/Scenes/Scripts/HealthBar.cs" />
+      <File FileName="Assets/Scenes/Scripts/Items/ItemCollector.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Gamologie" expanded="True">
-            <Node name="Assets" expanded="True" selected="True">
+            <Node name="Assets" expanded="True">
               <Node name="Scenes" expanded="True">
-                <Node name="Scripts" expanded="True" />
+                <Node name="Scripts" expanded="True">
+                  <Node name="CharacterBehaviour" expanded="True">
+                    <Node name="Character_AI.cs" selected="True" />
+                  </Node>
+                  <Node name="Items" expanded="True" />
+                  <Node name="Lead" expanded="True" />
+                  <Node name="Tower" expanded="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -23,7 +31,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="4ee5ea3f-9e52-45a1-bf29-59a3bf6f4ffe" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3089f181-a76b-4278-a970-7a45af2e0b90" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
