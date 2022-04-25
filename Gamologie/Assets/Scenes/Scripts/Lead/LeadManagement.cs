@@ -109,20 +109,17 @@ public class LeadManagement : MonoBehaviour
             {
                 Allies[0].GetComponent<Character_AI>().makeLeaderOrNot(true);
                 defineLeader(Allies[0]);
+                //Debug.Log(Allies[0].GetComponent<Character_AI>().grp.HasGroup());
             }
 
-            if (Allies[1] != null)
-            {
-                //Debug.Log(leadersHaveGroup());
-                Debug.Log(Allies[1].GetComponent<Character_AI>().isLeader);
-            }
+            Debug.Log(leadersHaveGroup());
 
             foreach(GameObject any in Allies)
             {
                 if (any != null)
                 {
                     Character_AI script = any.GetComponent<Character_AI>();
-                    if (leadersHaveGroup() && !script.groupe && !script.isLeader)
+                    if (leadersHaveGroup() && !script.grp.HasGroup() && !script.isLeader)
                     {
                         script.makeLeaderOrNot(true);
                         defineLeader(any);
@@ -149,7 +146,8 @@ public class LeadManagement : MonoBehaviour
         foreach (GameObject any in Leaders)
          {
                 Character_AI script = any.GetComponent<Character_AI>();
-                if (!script.groupe)
+            
+                if (!script.grp.HasGroup())
                 {
                     return false;
                 }

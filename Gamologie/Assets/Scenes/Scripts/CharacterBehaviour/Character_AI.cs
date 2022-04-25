@@ -42,7 +42,6 @@ public class Character_AI : LeadManagement
     //HealthBar
     public HealthBar healthbar;
 
-
     //Attacking
     public float timeBetweenAttacks;
     public bool alreadyAttacked;
@@ -61,12 +60,8 @@ public class Character_AI : LeadManagement
     [SerializeField]  Text coinsTextTeam1 ;
     [SerializeField]  Text coinsTextTeam2 ;
 
-    //groupe du personnage
-    List<GameObject> grp;
-    //booléen pour vérifier l'appartenance à un groupe
-    public bool groupe;
 
-
+    public Group grp;
 
 
 
@@ -84,7 +79,7 @@ public class Character_AI : LeadManagement
 
     public void makeLeaderOrNot(bool leader)
     {
-        if (this.groupe == false)
+        if (!this.grp.HasGroup())
         {
             this.isLeader = leader;
         }
@@ -160,9 +155,8 @@ public class Character_AI : LeadManagement
 
     void Start()
     {
-        grp = new List<GameObject>();
-        this.grp.Add(this.gameObject);
-        this.groupe = false;
+        
+        this.grp = new Group(this.gameObject);
         
         //Item initial
         coinsTeam1 = 0;
@@ -207,12 +201,6 @@ public class Character_AI : LeadManagement
     void Update()
     {
 
-
-        if (isGroupEmpty())
-        {
-            this.groupe = false;
-        }
-        
         //Health Bar
         healthbar.SetHealth((int) health);
 
@@ -222,13 +210,10 @@ public class Character_AI : LeadManagement
         localLetterBox = receiveMessage();
         
         target = GetEnemy();
-        createGroup();
+        CreateGroup();
         FollowTeamTarget();
 
-        if(this.isLeader)
-        {
-            Debug.Log(this.groupe);
-        }
+        
         
         if (target != null)
         {
@@ -270,22 +255,6 @@ public class Character_AI : LeadManagement
         //giveHelp();
     }
 
-
-    bool isGroupEmpty()
-    {
-        if(this.grp == null)
-        {
-            return true;
-        }
-        foreach(GameObject any in this.grp)
-        {
-            if(any == this.gameObject && grp.Count == 1)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
     
     void askForHelp()
     {
@@ -329,37 +298,35 @@ public class Character_AI : LeadManagement
     }
 
 
-    void addToGroup(GameObject any)
+    void AddMember(GameObject any)
     {
         if (any != null)
         {
             Character_AI script = any.GetComponent<Character_AI>();
-            if (script.groupe = false && script.grp == null)
+            if (!script.grp.HasGroup())
             {
-                this.grp.Add(any);
+                this.grp.AddToGroup(any);
                 script.grp = this.grp;
-                script.groupe = true;
             }
         }
     }
 
-    void removeFromGroup(GameObject any)
+    void RemoveMember(GameObject any)
     {
         if (any != null)
         {
             Character_AI script = any.GetComponent<Character_AI>();
-            if (script.groupe == true && script.grp == this.grp)
+            if (script.grp.HasGroup() && script.grp == this.grp)
             {
-                this.grp.Remove(any);
+                this.grp.RemoveFromGroup(any);
                 script.grp = null;
-                script.groupe = false;
             }
         }
         
     }
 
     
-    void createGroup()
+    void CreateGroup()
     {
         
         if (this.isLeader)
@@ -370,20 +337,18 @@ public class Character_AI : LeadManagement
                 float d = Vector3.Distance(transform.position, any.transform.position);
                 if (d < 10)
                 {
-                    
-                    this.groupe = true;
-                    addToGroup(any);
+                    AddMember(any);
                 }
-                else { removeFromGroup(any); }
+                else { RemoveMember(any); }
             }
         }
     }
 
     void FollowTeamTarget()
     {
-        if(this.groupe == true && this.isLeader)
+        if(this.grp.HasGroup() && this.isLeader)
         {
-            foreach(GameObject obj in this.grp)
+            foreach(GameObject obj in this.grp.GetMembres())
             {
                 Character_AI script = obj.GetComponent<Character_AI>();
                 if (target != null)
