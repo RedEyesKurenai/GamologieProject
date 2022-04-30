@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Group : MonoBehaviour
+public class Group : Object
 {
     private List<GameObject> membres;
     private bool groupe;

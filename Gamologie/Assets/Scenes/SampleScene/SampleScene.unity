@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.15992531, g: 0.10980994, b: 0.15017503, a: 1}
+  m_IndirectSpecularColor: {r: 0.15994188, g: 0.10942494, b: 0.15007848, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -318,10 +318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 40317805}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -1129,10 +1131,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 217644889}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -2379,10 +2383,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 406487763}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -2453,10 +2459,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 430524434}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -2527,10 +2535,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 450524851}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -2762,10 +2772,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 481839718}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -2947,10 +2959,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 512618479}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -4078,10 +4092,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 643984112}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -4258,10 +4274,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 670494972}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -6109,10 +6127,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 874318436}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -6296,10 +6316,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 897191269}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -7183,10 +7205,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 1022240197}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -7267,6 +7291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cffcbb6d55f90534795435067b8677b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
@@ -7552,6 +7577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cffcbb6d55f90534795435067b8677b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
@@ -7578,10 +7604,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 1132100052}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -8595,10 +8623,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 1298321407}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -10024,10 +10054,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 1531561522}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -10127,10 +10159,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 1598459397}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -10470,10 +10504,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 1644985140}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -11539,10 +11575,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 1810779832}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -12418,10 +12456,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 1986864428}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -12723,10 +12763,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 2024191004}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -13232,10 +13274,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1101658320}
   id: 0
   agent: {fileID: 2121447420}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
@@ -13568,10 +13612,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdddafe33ed466faf7eab21dbfb16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliesDied: 0
   globalLetterBox: []
   Leaders: []
   Allies: []
   Enemies: []
+  lead: {fileID: 1022803095}
   id: 0
   agent: {fileID: 2147073446}
   datachara: {fileID: 11400000, guid: a008af3d486cead42947ece23789a514, type: 2}
