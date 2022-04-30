@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BillboardHealth">
+    <Position X="6.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\BillboardHealth.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterSkinController">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="CharacterSkinController.EyePosition" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Characters\Jammo-Character\Scripts\CharacterSkinController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BARAAQAAACAAAAIAAAIAgAAAAAAAIAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Characters\Jammo-Character\Scripts\CharacterSkinController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MovementInput">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIFAACASAAQAEAAAABQIABEAAAAJAIgQAAAAQEAAI=</HashCode>
+      <FileName>Assets\Characters\Jammo-Character\Scripts\MovementInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraMove">
+    <Position X="4.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scenes\Scripts\CameraBehabiour\CameraMove.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Character_AI">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAQoAEIJEKQAgQAELDBAoCAgBIAQAAhMQBAAkBACkqg=</HashCode>
+      <FileName>Assets\Scenes\Scripts\CharacterBehaviour\Character_AI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Message">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAQAAAAAAAAAAAAAAIACQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scenes\Scripts\CharacterBehaviour\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataChara">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAIAAAAgAAEAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scenes\Scripts\DataChara\DataChara.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthBar">
+    <Position X="10" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAEAgAAAAA=</HashCode>
+      <FileName>Assets\Scenes\Scripts\HealthBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rotate" Collapsed="true">
+    <Position X="9.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scenes\Scripts\Items\Rotate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LeadManagement">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="LeadManagement.Subject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scenes\Scripts\Lead\LeadManagement.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QAQAQAgAACAAQAAAABIAAAAAAAFBAMAAAAICAAAAAAA=</HashCode>
+      <FileName>Assets\Scenes\Scripts\Lead\LeadManagement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotateSkybox">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scenes\Scripts\RotateSkybox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TowerLife">
+    <Position X="8.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAIACAAAAAAAAAAAAAAAAAAAAAAABAAgAAAAAg=</HashCode>
+      <FileName>Assets\Scenes\Scripts\Tower\TowerLife.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -251,8 +251,9 @@ public class Character_AI : LeadManagement
 
         if (target != null)
         {
+            Debug.Log(target + "Attack ennemi");
 
-            Distance = Vector3.Distance(transform.position, target.transform.position);
+           Distance = Vector3.Distance(transform.position, target.transform.position);
 
 
             if ((agent.CompareTag("Team1") && target.CompareTag("Team2")) || (agent.CompareTag("Team2") && target.CompareTag("Team1")))
@@ -268,6 +269,7 @@ public class Character_AI : LeadManagement
 
             }
         }
+        
 
         //Check for sight and attack range
 
@@ -287,22 +289,29 @@ public class Character_AI : LeadManagement
         }
 
         //Check if in Avoid zone
-        /*
-         * if (Avoid_zone.Count != 0)
+        
+         if (Avoid_zone.Count != 0)
         {
+
             foreach (Vector3 z in Avoid_zone)
             {
-                if (Vector3.Distance(this.transform.position, z) < 0.8)
+                Debug.Log("distance" + Vector3.Distance(this.transform.position, z) + "XXXX");
+                if (Vector3.Distance(this.transform.position, z) < 5)
                 {
+                    
                     Vector3 diff = z - this.transform.position; //Arrivé - départ : pour avoir le vecteur direct 
                     Vector3 rotatedVector;
                     rotatedVector = Quaternion.AngleAxis(90, Vector3.left) * diff;
+                    Debug.Log("rotate !!! ");
                     Move(rotatedVector);//tourner de 90 degré pour eviter l'objet et continuer les chemin
+                    
                     
                 }
             }
+            
+            ;
         }
-        */
+        
 
         //Analysis of the messages
 
@@ -410,7 +419,7 @@ public class Character_AI : LeadManagement
         if (towerEnemy != null)
         {
             Move(towerEnemy.transform.position);
-            Debug.Log("ICIIIIIXXXX");
+            
 
             float DistanceT = Vector3.Distance(transform.position, towerEnemy.transform.position);
             if (DistanceT < radiusAttack)
@@ -452,6 +461,7 @@ public class Character_AI : LeadManagement
 
     private void Chase()
     {
+        
         if (target != null)
         {
             Move(target.transform.position);
@@ -462,6 +472,7 @@ public class Character_AI : LeadManagement
 
     private void Attack()
     {
+        Debug.Log("Probleme :: ils attaquent continuellement");
         //Make sure enemy doesn't move
         animator.SetBool("isRunning", false);
         agent.ResetPath();
