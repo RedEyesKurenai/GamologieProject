@@ -11,19 +11,20 @@ public class LeadManagement : MonoBehaviour
 
     public List<Message> globalLetterBox;
 
+    public List<GameObject> Leaders;
     public List<GameObject> Allies;
     public List<GameObject> Enemies;
+    
 
-    public GameObject leaderAlie;
-    public GameObject leaderEnemi;
 
     public enum Subject
     {
         BEGIN = 0,
         TEST = 1,
         IS_DEAD = 2,
-        HEALTH_MOVE_AT = 3,
-        POISON_AVOID_THIS = 4
+        HELP = 3,
+        HEALTH_MOVE_AT = 4,
+        POISON_AVOID_THIS = 5
     }
 
     public List<GameObject> getEnnemies()
@@ -42,12 +43,7 @@ public class LeadManagement : MonoBehaviour
             }
         }
         return enemies;
-        /*
-        foreach (GameObject temp in Enemies)
-        {
-            target = temp;
-        }
-        */
+        
     }
 
     public List<GameObject> getAllies()
@@ -58,6 +54,26 @@ public class LeadManagement : MonoBehaviour
             allies.Add(sibling.gameObject);
         }
         return allies;
+    }
+
+    public List<GameObject> getLeaders()
+    {
+        List<GameObject> leaders = new List<GameObject>();
+        if (Allies != null)
+        {
+            foreach (GameObject any in Allies)
+            {
+                if (any != null)
+                {
+                    Character_AI script = any.GetComponent<Character_AI>();
+                    if (script.isLeader)
+                    {
+                        leaders.Add(any);
+                    }
+                }
+            }
+        }
+        return leaders;
     }
 
     public void giveId()
@@ -73,27 +89,73 @@ public class LeadManagement : MonoBehaviour
 
     public List<GameObject> getEnemyArray() { return Enemies; }
 
-    public void defineLeader()
+    public void defineLeader(GameObject any)
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.parent = leaderAlie.transform;
+        sphere.transform.parent = any.transform;
         sphere.transform.localPosition = new Vector3(0, 2, 0);
         sphere.transform.localScale = new Vector3(0.25083f, 0.25083f, 0.25083f);
         sphere.transform.localRotation = new Quaternion(0, 0, 0, 0);
     }
 
+
+    //Procédure qui gère l'affectation des leaders
     public void setLeader()
     {
-        for(int i = 0; i < Allies.Count; i++)
+        
+        if (Allies != null)
         {
-            if(Allies[i] != null)
+            if (Allies[0] != null)
             {
-                leaderAlie = Allies[i];
-                leaderAlie.gameObject.GetComponent<Character_AI>().makeLeaderOrNot(true);
-                defineLeader();
-                break;
+                Allies[0].GetComponent<Character_AI>().makeLeaderOrNot(true);
+                defineLeader(Allies[0]);
+                //Debug.Log(Allies[0].GetComponent<Character_AI>().grp.HasGroup());
+            }
+
+            Debug.Log(leadersHaveGroup());
+
+            foreach(GameObject any in Allies)
+            {
+                if (any != null)
+                {
+                    Character_AI script = any.GetComponent<Character_AI>();
+                    if (leadersHaveGroup() && !script.grp.HasGroup() && !script.isLeader)
+                    {
+                        script.makeLeaderOrNot(true);
+                        defineLeader(any);
+                        break;
+
+                    }
+                    else break;
+                    
+                    
+                }
             }
         }
+    }
+
+
+    //Fonction booléene qui vérifie que tout les leaders ont un groupe
+    public bool leadersHaveGroup()
+    {
+        if(Leaders == null)
+        {
+            return false;
+        }
+        
+        foreach (GameObject any in Leaders)
+         {
+                Character_AI script = any.GetComponent<Character_AI>();
+            
+                if (!script.grp.HasGroup())
+                {
+                    return false;
+                }
+         }
+
+       return true;
+        
+        
     }
 
     public List<Message> globalLetterBoxReloading() {
@@ -110,10 +172,10 @@ public class LeadManagement : MonoBehaviour
     void Start()
     {
         giveId();
-        Enemies = new List<GameObject>();
-        Allies = new List<GameObject>();
+        
         globalLetterBox = new List<Message>();
         Allies = getAllies();
+        Leaders = getLeaders();
         Enemies = getEnnemies();
         globalLetterBox = globalLetterBoxReloading();
         setLeader();
@@ -123,6 +185,7 @@ public class LeadManagement : MonoBehaviour
     void Update()
     {
         globalLetterBox = globalLetterBoxReloading();
+        Leaders = getLeaders();
         setLeader();
     }
 }

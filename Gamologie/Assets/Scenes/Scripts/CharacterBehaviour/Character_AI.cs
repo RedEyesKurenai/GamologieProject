@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class Character_AI : LeadManagement
 {
-    //[SerializeField] GameObject CharaAIGameObjet;
+    
 
-    public LeadManagement lead;
+    private LeadManagement lead;
     
     public int id = 0;
     
@@ -42,7 +42,6 @@ public class Character_AI : LeadManagement
     //HealthBar
     public HealthBar healthbar;
 
-
     //Attacking
     public float timeBetweenAttacks;
     public bool alreadyAttacked;
@@ -55,13 +54,14 @@ public class Character_AI : LeadManagement
     static int coinsTeam2 ;
 
     //Avoid Zone
-    List <Vector3> Avoid_zone;
+    List<Vector3> Avoid_zone;
 
     //[SerializeField]
     [SerializeField]  Text coinsTextTeam1 ;
     [SerializeField]  Text coinsTextTeam2 ;
 
 
+    public Group grp;
 
 
 
@@ -77,9 +77,30 @@ public class Character_AI : LeadManagement
 
     public bool leaderOrNot() { return isLeader; }
 
-    public void makeLeaderOrNot(bool leader) { this.isLeader = leader; }
+    public void makeLeaderOrNot(bool leader)
+    {
+        if (!this.grp.HasGroup())
+        {
+            this.isLeader = leader;
+        }
+    }
 
     public void setId(int id) { this.id = id; }
+
+    public GameObject getAlly(int identity)
+    {
+        foreach (GameObject obj in Allies)
+        {
+            Character_AI script = obj.GetComponent<Character_AI>();
+            if (script.id == identity)
+            {
+                return obj;
+            }
+        }
+
+        return null;
+
+    }
 
     public GameObject GetEnemy()
     {
@@ -99,7 +120,10 @@ public class Character_AI : LeadManagement
         return temp;
     }
 
-    public void sendMessage(int id, int dest, int subject, string content, Vector3 position, GameObject zone)
+    /**
+     * Fonction permettant d'envoyer des messages dans la bo√Æte aux lettres globale
+     */
+    public void SendMessage(int id, int dest, int subject, string content, Vector3 position, GameObject zone)
     {
         //Message message = new Message(id, dest, false, subject, content);
         Message message = ScriptableObject.CreateInstance<Message>();
@@ -113,7 +137,10 @@ public class Character_AI : LeadManagement
         lead.globalLetterBox.Add(message);
     }
 
-    public List<Message> receiveMessage()
+    /**
+     * Fonction permettant de recevoir les messages concernant le personnage
+     */
+    public List<Message> ReceiveMessage()
     {
         List<Message> boitAuLettre = new List<Message>();
         foreach(Message m in globalLetterBox)
@@ -134,7 +161,9 @@ public class Character_AI : LeadManagement
 
     void Start()
     {
-
+        
+        this.grp = new Group(this.gameObject);
+        
         //Item initial
         coinsTeam1 = 0;
         coinsTeam2 = 0;
@@ -166,18 +195,9 @@ public class Character_AI : LeadManagement
             importData();
         
         localLetterBox = new List<Message>();
-        /*
-        if (isLeader)
-        {
-            sendMessage(this.id, 0, (int)Content.BEGIN, "start");
-            sendMessage(this.id, 2, (int)Content.TEST, "tst");
-        }
-        */
-        if(this.id == 2)
-            sendMessage(this.id, 3, (int)Subject.BEGIN, "start", Vector3.zero, null);
-        if (this.id == 2)
-            sendMessage(this.id, 1, (int)Subject.TEST, "test", Vector3.zero, null );
-        localLetterBox = receiveMessage();
+        
+        
+        localLetterBox = ReceiveMessage();
 
     }
 
@@ -185,15 +205,20 @@ public class Character_AI : LeadManagement
     {
 
         //Health Bar
-        healthbar.SetHealth((int)health);
+        healthbar.SetHealth((int) health);
 
         Allies = this.lead.getAllies();
         Enemies = this.lead.getEnnemies();
         globalLetterBox = lead.globalLetterBox;
-        localLetterBox = receiveMessage();
-        //target = Enemies[id - 1];
+        localLetterBox = ReceiveMessage();
+        
         target = GetEnemy();
+        CreateGroup();
+        FollowTeamTarget();
+        BuyHealthTeam();
 
+        
+        
         if (target != null)
         {
 
@@ -202,7 +227,13 @@ public class Character_AI : LeadManagement
 
             if ((agent.CompareTag("Team1") && target.CompareTag("Team2")) || (agent.CompareTag("Team2") && target.CompareTag("Team1")))
             {
-                playerInSightRange = true;
+                
+
+                if (Distance < radiusChase)
+                {
+                    playerInSightRange = true;
+                }
+                else playerInSightRange = false;
 
                 if (Distance < radiusAttack)
                 {
@@ -215,31 +246,44 @@ public class Character_AI : LeadManagement
         }
 
         //Check for sight and attack range
-
+        
         if (!playerInSightRange && !playerInAttackRange) GoToTower();
 
         if (playerInSightRange && !playerInAttackRange) Chase();
 
         if (playerInAttackRange && playerInSightRange) Attack();
 
-        //Check if in Avoid zone
-        if (Avoid_zone.Count != 0)
+        /*if (Avoid_zone.Count != 0)
         {
+
             foreach (Vector3 z in Avoid_zone)
             {
-                if (Vector3.Distance(this.transform.position, z) < 0.8)
+                Debug.Log("distance" + Vector3.Distance(this.transform.position, z) + "XXXX");
+                if (Vector3.Distance(this.transform.position, z) < 5)
                 {
-                    Vector3 diff = z - this.transform.position; //ArrivÈ - dÈpart : pour avoir le vecteur direct 
+
+                    Vector3 diff = z - this.transform.position; //Arriv√© - d√©part : pour avoir le vecteur direct 
                     Vector3 rotatedVector;
                     rotatedVector = Quaternion.AngleAxis(90, Vector3.left) * diff;
-                    Move(rotatedVector);//tourner de 90 degrÈ pour eviter l'objet et continuer les chemin
-                    
-                }
+                    Debug.Log("rotate !!! ");
+                    Move(rotatedVector);//tourner de 90 degr√© pour eviter l'objet et continuer les chemin
+
+
+                     }
             }
-        }
 
-        //Analysis of the messages
+            
+        }*/
 
+        GoToHealth();
+
+        //askForHelp();
+        //giveHelp();
+    }
+
+
+    private void GoToHealth()
+    {
         foreach (Message m in localLetterBox)
         {
             if (!m.isSupported)
@@ -254,7 +298,7 @@ public class Character_AI : LeadManagement
                             if (Vector3.Distance(transform.position, m.zone.transform.GetChild(pills_health_number - 1).position) > 1)
                             {
                                 Move(m.zone.transform.GetChild(pills_health_number - 1).position);
-                               
+
                             }
 
                             else
@@ -267,7 +311,7 @@ public class Character_AI : LeadManagement
                             m.isSupported = true;
                         }
 
-                    }                    
+                    }
                 }
 
                 if (m.subject == (int)Subject.POISON_AVOID_THIS)
@@ -278,80 +322,210 @@ public class Character_AI : LeadManagement
             }
         }
     }
+    
+    void AskForHelp()
+    {
+        if (target != null)
+        {
+
+            if (this.playerInSightRange )
+            {
+                foreach (GameObject obj in Allies)
+                {
+                    if (this.gameObject != obj)
+                    {
+                        Character_AI script = obj.GetComponent<Character_AI>();
+                        SendMessage(this.id, script.id, (int)Subject.HELP, "Help", target.transform.position, target);
+                    }
+                }
+            }
+        }
+        else GoToTower();
+
+    }
+
+    void GiveHelp()
+    {
+        if (localLetterBox != null )
+        {
+            foreach (Message mes in localLetterBox)
+            {
+                if (mes.subject == 3 && mes.content == "Help")
+                {
+
+                    if (mes.zone != null)
+                    {
+                        Move(mes.position);
+                    }
+                    else GoToTower();
+                }
+            }
+        }
+        else GoToTower();
+    }
 
 
+    void AddMember(GameObject any)
+    {
+        if (any != null)
+        {
+            Character_AI script = any.GetComponent<Character_AI>();
+            if (!script.grp.HasGroup())
+            {
+                this.grp.AddToGroup(any);
+                script.grp = this.grp;
+            }
+        }
+    }
+
+    void RemoveMember(GameObject any)
+    {
+        if (any != null)
+        {
+            Character_AI script = any.GetComponent<Character_AI>();
+            if (script.grp.HasGroup() && script.grp == this.grp)
+            {
+                this.grp.RemoveFromGroup(any);
+                script.grp = null;
+            }
+        }
+        
+    }
+
+    
+    void CreateGroup()
+    {
+        
+        if (this.isLeader)
+        {
+            
+            foreach(GameObject any in Allies)
+            {
+                float d = Vector3.Distance(transform.position, any.transform.position);
+                if (d < 10)
+                {
+                    AddMember(any);
+                }
+                
+            }
+        }
+    }
+
+    void FollowTeamTarget()
+    {
+        if(this.grp.HasGroup() && this.isLeader)
+        {
+            foreach(GameObject obj in this.grp.GetMembres())
+            {
+                Character_AI script = obj.GetComponent<Character_AI>();
+                if (target != null)
+                {
+                    script.target = this.target;
+                }
+                script.Move(this.transform.position);
+            }
+        }
+    }
+
+    
     //Items Coins touched
     private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
         {
-            if (other.gameObject.CompareTag("Coin"))
+            Destroy(other.gameObject);
+            if (agent.CompareTag("Team1"))
             {
-                Destroy(other.gameObject);
-                if (agent.CompareTag("Team1"))
-                {
-                    coinsTeam1 = coinsTeam1 + 100;
-                    Debug.Log("+1 coin for Team 1");
-                    coinsTextTeam1.text = "Team 1 Coins :" + coinsTeam1;
-                    Debug.Log(coinsTeam1 + "Team 1");
-                }
-                if (agent.CompareTag("Team2"))
-                {
-                    coinsTeam2 = coinsTeam2 + 100;
-                    Debug.Log("+1 coin for Team 2");
-                    coinsTextTeam2.text = "Team 2 Coins :" + coinsTeam2;
-                    Debug.Log(coinsTeam2 + "Team 1");
-                }
-
+                coinsTeam1 = coinsTeam1 + 100;
+                Debug.Log("+1 coin for Team 1");
+                coinsTextTeam1.text = "Team 1 Coins :" + coinsTeam1;
+                Debug.Log(coinsTeam1 + "Team 1");
             }
-        
+            if (agent.CompareTag("Team2"))
+            {
+                coinsTeam2 = coinsTeam2 + 100;
+                Debug.Log("+1 coin for Team 2");
+                coinsTextTeam2.text = "Team 2 Coins :" + coinsTeam2;
+                Debug.Log(coinsTeam2 + "Team 1");
+            }
 
-        int health_ecart =(int) (health * 0.5) ; //50% de la sante
-
-        if (other.gameObject.CompareTag("Hlth"))
-       {
-           Destroy(other.gameObject);
-            health =   Mathf.Min(health + health_ecart, maxHealth); //rajouter 50% de vie
-           Debug.Log("+50% health");
-            //Envoyer un message ‡ toutes l'Èquipe que pillule bonus ici et venir si peu de vie 
-            Vector3 health_position= other.transform.position;
-            //envoie ‡ tous le monde de l'Èquipe 0
-            sendMessage(this.id, 0, (int)Subject.HEALTH_MOVE_AT,"I Found health", health_position, other.transform.parent.gameObject);
-            
         }
 
-       if (other.gameObject.CompareTag("Poison"))
-       {
-           Destroy(other.gameObject);
-           this.TakeDamage(health_ecart);
-           Debug.Log("-50% health");
 
-            //Envoyer un message ‡ toutes l'Èquipe que pilule mallus ici et Èviter ‡ tout prix cette zone
+        int health_ecart = (int)(health * 0.5); //50% de la sante
+
+        if (other.gameObject.CompareTag("Hlth"))
+        {
+            Destroy(other.gameObject);
+            health = Mathf.Min(health + health_ecart, maxHealth); //rajouter 50% de vie
+            Debug.Log("+50% health");
+            //Envoyer un message √† toutes l'√©quipe que pillule bonus ici et venir si peu de vie 
+            Vector3 health_position = other.transform.position;
+            //envoie √† tous le monde de l'?quipe 0
+            SendMessage(this.id, 0, (int)Subject.HEALTH_MOVE_AT, "I Found health", health_position, other.transform.parent.gameObject);
+
+        }
+
+        if (other.gameObject.CompareTag("Poison"))
+        {
+            Destroy(other.gameObject);
+            this.TakeDamage(health_ecart);
+            Debug.Log("-50% health");
+
+            //Envoyer un message √† toutes l'√©quipe que pilule mallus ici et √©viter √© tout prix cette zone
             Vector3 poison_position = other.transform.position;
-            //envoie ‡ tous le monde de l'Èquipe 0
-            sendMessage(this.id, 0, (int)Subject.POISON_AVOID_THIS, "I Found poison", poison_position, other.transform.parent.gameObject);
-           
+            //envoie √† tous le monde de l'√©quipe 0
+            SendMessage(this.id, 0, (int)Subject.POISON_AVOID_THIS, "I Found poison", poison_position, other.transform.parent.gameObject);
+
 
 
         }
 
     }
 
+    private void BuyHealthTeam()
+    {
+        if( agent.CompareTag("Team1") && coinsTeam1 >=500)
+        {
+            foreach(GameObject obj in Allies )
+            {
+                if(obj != null)
+                obj.GetComponent<Character_AI>().health = initial_health;
+            }
+            coinsTeam1 = 0;
+        }
+
+        if (agent.CompareTag("Team2") && coinsTeam2 >= 500)
+        {
+            foreach (GameObject obj in Allies)
+            {
+                if (obj != null)
+                obj.GetComponent<Character_AI>().health = initial_health;
+            }
+            coinsTeam2 = 0;
+        }
+
+
+    }
+
     private void GoToTower()
     {
-        animator.SetBool("isAttacking", false);
+        
+            animator.SetBool("isAttacking", false);
 
 
 
-        if (towerEnemy != null)
-        {
-            Move(towerEnemy.transform.position);
-            Debug.Log("ICIIIIIXXXX");
-
-            float DistanceT = Vector3.Distance(transform.position, towerEnemy.transform.position);
-            if (DistanceT < radiusAttack)
+            if (towerEnemy != null)
             {
-                AttackTower(towerEnemy);
+                Move(towerEnemy.transform.position);
+
+                float DistanceT = Vector3.Distance(transform.position, towerEnemy.transform.position);
+                if (DistanceT < radiusAttack)
+                {
+                    AttackTower(towerEnemy);
+                }
             }
-        }
+        
 
 
     }
@@ -359,7 +533,6 @@ public class Character_AI : LeadManagement
 
     private void AttackTower(GameObject tower)
     {
-        //Make sure enemy doesn't move
         animator.SetBool("isRunning", false);
         agent.ResetPath();
 
@@ -370,7 +543,7 @@ public class Character_AI : LeadManagement
 
             if (!alreadyAttacked)
             {
-                ///Attack code here
+                
 
                 animator.SetBool("isAttacking", true);
 
@@ -396,7 +569,7 @@ public class Character_AI : LeadManagement
 
     private void Attack()
     {
-        //Make sure enemy doesn't move
+        
         animator.SetBool("isRunning", false);
         agent.ResetPath();
 
@@ -407,7 +580,7 @@ public class Character_AI : LeadManagement
 
             if (!alreadyAttacked)
             {
-                ///Attack code here
+                
 
                 animator.SetBool("isAttacking", true);
 
@@ -436,7 +609,7 @@ public class Character_AI : LeadManagement
         health -= damage;
 
         if (health <= 0) { 
-            Invoke(nameof(DestroyEnemy), 0.1f); 
+            Invoke(nameof(DestroyEnemy), 0.5f); 
         }
     }
 
@@ -453,29 +626,6 @@ public class Character_AI : LeadManagement
         Destroy(gameObject);
         
     }
-
-
-    //retourne une liste des alliÈs rangÈs du plus proche au plus loin de mainUnit, fais avec algo tri bulle
-    /*public List<GameObject> GetAlliesOrderedByDistance(GameObject mainUnit)
-    {
-        List<GameObject> tempUnits = members;
-
-        for (int i = tempUnits.Count - 1; i > 1; i--)
-        {
-            for (int j = 0; j < i; j++)
-            {
-                float d1 = Vector3.Distance(mainUnit.transform.position, tempUnits[j].transform.position) - tempUnits[j].GetComponent<LeaderNPC>().attackRange;
-                float d2 = Vector3.Distance(mainUnit.transform.position, tempUnits[j + 1].transform.position) - tempUnits[j + 1].GetComponent<LeaderNPC>().attackRange;
-                if (d1 > d2)
-                {
-                    GameObject tmp = tempUnits[j];
-                    tempUnits[j] = tempUnits[j + 1];
-                    tempUnits[j + 1] = tmp;
-                }
-            }
-        }
-        return tempUnits;
-    }*/
-
+    
 
 }

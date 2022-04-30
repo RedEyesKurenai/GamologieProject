@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class ItemCollector : MonoBehaviour
 {
     int coins = 0;
@@ -35,16 +36,10 @@ public class ItemCollector : MonoBehaviour
             health = Mathf.Max(health - 100, 0);
             Debug.Log("-100 health");
             healthText.text = "Health :" + health;
-            if(health<=0)
-            {
-                //ReloadLevel();
-            }
+            
         }
 
     }
 
-    void ReloadLevel()
-    {
-        Application.LoadLevel(Application.loadedLevel);
-    }
+    
 }
