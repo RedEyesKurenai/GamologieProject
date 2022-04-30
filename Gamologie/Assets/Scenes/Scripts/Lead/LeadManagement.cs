@@ -7,8 +7,6 @@ public class LeadManagement : MonoBehaviour
 {
     private int nb = 0;
 
-    public int alliesDied = 0;
-
     //[SerializeField] GameObject ceGameObjet;
 
     public List<Message> globalLetterBox;
@@ -174,11 +172,20 @@ public class LeadManagement : MonoBehaviour
     void Start()
     {
         giveId();
+        
+        globalLetterBox = new List<Message>();
+        Allies = getAllies();
+        Leaders = getLeaders();
+        Enemies = getEnnemies();
+        globalLetterBox = globalLetterBoxReloading();
+        setLeader();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //globalLetterBox = globalLetterBoxReloading();
+        globalLetterBox = globalLetterBoxReloading();
+        Leaders = getLeaders();
+        setLeader();
     }
 }

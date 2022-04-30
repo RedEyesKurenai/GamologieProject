@@ -8,7 +8,7 @@ public class Character_AI : LeadManagement
 {
     
 
-    public LeadManagement lead;
+    private LeadManagement lead;
     
     public int id = 0;
     
@@ -87,13 +87,9 @@ public class Character_AI : LeadManagement
 
     public void setId(int id) { this.id = id; }
 
-    public int getId() { return this.id; }
-
     public GameObject getAlly(int identity)
     {
-        List<GameObject> allies = this.lead.getAllies();
-
-        foreach (GameObject obj in allies)
+        foreach (GameObject obj in Allies)
         {
             Character_AI script = obj.GetComponent<Character_AI>();
             if (script.id == identity)
@@ -122,17 +118,6 @@ public class Character_AI : LeadManagement
             }
         }
         return temp;
-    }
-
-    public GameObject getById(int id)
-    {
-        List<GameObject> allies = this.lead.getAllies();
-        foreach (GameObject g in allies)
-        {
-            if (g.GetComponent<Character_AI>().id == id)
-                return g;
-        }
-        return null;
     }
 
     /**
@@ -176,15 +161,7 @@ public class Character_AI : LeadManagement
 
     void Start()
     {
-        lead.Enemies = new List<GameObject>();
-        lead.Allies = new List<GameObject>();
-        lead.globalLetterBox = new List<Message>();
-        lead.Allies = lead.getAllies();
-        lead.Enemies = lead.getEnnemies();
-        //globalLetterBox = globalLetterBoxReloading();
-        lead.setLeader();
-        //lead.UnderGroups = new List<List<GameObject>>();
-
+        
         this.grp = new Group(this.gameObject);
         
         //Item initial
@@ -226,13 +203,13 @@ public class Character_AI : LeadManagement
 
     void Update()
     {
-        lead.setLeader();
+
         //Health Bar
         healthbar.SetHealth((int) health);
 
-        lead.Allies = this.lead.getAllies();
-        lead.Enemies = this.lead.getEnnemies();
-        //lead.globalLetterBox = lead.globalLetterBox;
+        Allies = this.lead.getAllies();
+        Enemies = this.lead.getEnnemies();
+        globalLetterBox = lead.globalLetterBox;
         localLetterBox = ReceiveMessage();
         
         target = GetEnemy();
@@ -244,7 +221,6 @@ public class Character_AI : LeadManagement
         
         if (target != null)
         {
-
             Distance = Vector3.Distance(transform.position, target.transform.position);
 
 
@@ -267,6 +243,7 @@ public class Character_AI : LeadManagement
 
             }
         }
+        else { playerInAttackRange = true; }
 
         //Check for sight and attack range
         
@@ -321,6 +298,7 @@ public class Character_AI : LeadManagement
                             if (Vector3.Distance(transform.position, m.zone.transform.GetChild(pills_health_number - 1).position) > 1)
                             {
                                 Move(m.zone.transform.GetChild(pills_health_number - 1).position);
+                                Debug.Log("Go to Health ");
 
                             }
 
@@ -353,13 +331,12 @@ public class Character_AI : LeadManagement
 
             if (this.playerInSightRange )
             {
-                List<GameObject> allies = this.lead.getAllies();
-                foreach (GameObject obj in allies)
+                foreach (GameObject obj in Allies)
                 {
                     if (this.gameObject != obj)
                     {
                         Character_AI script = obj.GetComponent<Character_AI>();
-                        SendMessage(this.id, script.id, (int)LeadManagement.Subject.HELP, "Help", target.transform.position, target);
+                        SendMessage(this.id, script.id, (int)Subject.HELP, "Help", target.transform.position, target);
                     }
                 }
             }
@@ -422,8 +399,8 @@ public class Character_AI : LeadManagement
         
         if (this.isLeader)
         {
-            List<GameObject> allies = this.lead.getAllies();
-            foreach (GameObject any in allies)
+            
+            foreach(GameObject any in Allies)
             {
                 float d = Vector3.Distance(transform.position, any.transform.position);
                 if (d < 10)
@@ -439,8 +416,7 @@ public class Character_AI : LeadManagement
     {
         if(this.grp.HasGroup() && this.isLeader)
         {
-            List<GameObject> members = this.grp.GetMembres();
-            foreach (GameObject obj in members)
+            foreach(GameObject obj in this.grp.GetMembres())
             {
                 Character_AI script = obj.GetComponent<Character_AI>();
                 if (target != null)
@@ -487,7 +463,7 @@ public class Character_AI : LeadManagement
             //Envoyer un message à toutes l'équipe que pillule bonus ici et venir si peu de vie 
             Vector3 health_position = other.transform.position;
             //envoie à tous le monde de l'?quipe 0
-            SendMessage(this.id, 0, (int)LeadManagement.Subject.HEALTH_MOVE_AT, "I Found health", health_position, other.transform.parent.gameObject);
+            SendMessage(this.id, 0, (int)Subject.HEALTH_MOVE_AT, "I Found health", health_position, other.transform.parent.gameObject);
 
         }
 
@@ -500,7 +476,7 @@ public class Character_AI : LeadManagement
             //Envoyer un message à toutes l'équipe que pilule mallus ici et éviter é tout prix cette zone
             Vector3 poison_position = other.transform.position;
             //envoie à tous le monde de l'équipe 0
-            SendMessage(this.id, 0, (int)LeadManagement.Subject.POISON_AVOID_THIS, "I Found poison", poison_position, other.transform.parent.gameObject);
+            SendMessage(this.id, 0, (int)Subject.POISON_AVOID_THIS, "I Found poison", poison_position, other.transform.parent.gameObject);
 
 
 
@@ -510,10 +486,9 @@ public class Character_AI : LeadManagement
 
     private void BuyHealthTeam()
     {
-        List<GameObject> allies = this.lead.getAllies();
-        if ( agent.CompareTag("Team1") && coinsTeam1 >=500)
+        if( agent.CompareTag("Team1") && coinsTeam1 >=500)
         {
-            foreach(GameObject obj in allies)
+            foreach(GameObject obj in Allies )
             {
                 if(obj != null)
                 obj.GetComponent<Character_AI>().health = initial_health;
@@ -523,7 +498,7 @@ public class Character_AI : LeadManagement
 
         if (agent.CompareTag("Team2") && coinsTeam2 >= 500)
         {
-            foreach (GameObject obj in allies)
+            foreach (GameObject obj in Allies)
             {
                 if (obj != null)
                 obj.GetComponent<Character_AI>().health = initial_health;
@@ -595,6 +570,7 @@ public class Character_AI : LeadManagement
 
     private void Attack()
     {
+        Debug.Log("bug");
         
         animator.SetBool("isRunning", false);
         agent.ResetPath();
