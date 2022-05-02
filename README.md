@@ -34,7 +34,7 @@ Lorsqu'on ouvre Unity, à gauche de l'écran se trouve la hiérarchie des objets
 
 Voici les objets importants:
 
-Level: objet vide contenant environnement
+- Level: objet vide contenant environnement
 
      Plane: le plateau/sol 
 
@@ -81,7 +81,7 @@ Items: objet vide contenant les objets collectables
           Health line: ligne de pilules vertes
 
      Malus Healths : objet vide contenant des zones de poisons
-     
+
           Poison: groupe de poison
 
 
