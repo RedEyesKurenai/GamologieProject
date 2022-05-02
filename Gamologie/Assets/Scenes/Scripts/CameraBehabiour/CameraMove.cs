@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
+    /*
+     vitesse de déplacement de la caméra
+     */
     public int speed;
+
+    /*
+     Fonction qui gère le déplacement de la caméra selon les touches claviers
+     */
     void Update()
     {
         if (Input.GetKey(KeyCode.RightArrow))

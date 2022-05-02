@@ -17,6 +17,7 @@ public class LeadManagement : MonoBehaviour
     
 
 
+    /*Enumération des sujets de message possible*/
     public enum Subject
     {
         BEGIN = 0,
@@ -27,6 +28,9 @@ public class LeadManagement : MonoBehaviour
         POISON_AVOID_THIS = 5
     }
 
+    /*
+     Fonction qui récupère la liste des ennemies
+     */
     public List<GameObject> getEnnemies()
     {
         List<GameObject> enemies = new List<GameObject>();
@@ -46,6 +50,9 @@ public class LeadManagement : MonoBehaviour
         
     }
 
+    /*
+     Fonction qui récupère la liste des alliés
+     */
     public List<GameObject> getAllies()
     {
         List<GameObject> allies = new List<GameObject>();
@@ -56,6 +63,9 @@ public class LeadManagement : MonoBehaviour
         return allies;
     }
 
+    /*
+     Fonction qui récupère la liste des leaders
+     */
     public List<GameObject> getLeaders()
     {
         List<GameObject> leaders = new List<GameObject>();
@@ -76,6 +86,9 @@ public class LeadManagement : MonoBehaviour
         return leaders;
     }
 
+    /*
+     Fonction qui répartie les Id aux personnage
+     */
     public void giveId()
     {
         foreach (Transform sibling in this.gameObject.transform)
@@ -89,6 +102,10 @@ public class LeadManagement : MonoBehaviour
 
     public List<GameObject> getEnemyArray() { return Enemies; }
 
+    
+    /*
+     Fonction qui définit un leader
+     */
     public void defineLeader(GameObject any)
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -99,7 +116,9 @@ public class LeadManagement : MonoBehaviour
     }
 
 
-    //Procédure qui gère l'affectation des leaders
+    /*
+     * Procédure qui gère l'affectation des leaders
+     */
     public void setLeader()
     {
         
@@ -135,7 +154,9 @@ public class LeadManagement : MonoBehaviour
     }
 
 
-    //Fonction booléene qui vérifie que tout les leaders ont un groupe
+    /*
+     * Fonction booléenne qui vérifie que tous les leaders ont un groupe
+     * */
     public bool leadersHaveGroup()
     {
         if(Leaders == null)
@@ -158,6 +179,9 @@ public class LeadManagement : MonoBehaviour
         
     }
 
+    /*
+     Fonction qui met à jour la boite au lettre
+     */
     public List<Message> globalLetterBoxReloading() {
 
         List<Message> boitAuLettre = new List<Message>();

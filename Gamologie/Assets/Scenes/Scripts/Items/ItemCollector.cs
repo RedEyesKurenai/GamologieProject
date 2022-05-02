@@ -6,12 +6,23 @@ using UnityEngine.UI;
 
 public class ItemCollector : MonoBehaviour
 {
+   
+    /*
+    valeur initiale du nombre des pièces et de la santé
+    */
     int coins = 0;
     int health = 300;
 
+    /*
+     Référence à l'affichage textuel du nombre de pièces et de santé
+     */
     [SerializeField] Text coinsText;
     [SerializeField] Text healthText;
 
+    /*
+     Fonction permettant de detruire l'item s'il est touché et de mettre à jour les valeurs sur l'affichage textuel
+        l'objet other est l'item touché
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Coin"))

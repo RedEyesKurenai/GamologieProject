@@ -33,6 +33,7 @@ public class Character_AI : LeadManagement
     private float initial_health;
 
 
+    //Stats du personnage
     public float health;
     public float maxHealth;
     public float radiusChase;
@@ -56,7 +57,7 @@ public class Character_AI : LeadManagement
     //Avoid Zone
     List<Vector3> Avoid_zone;
 
-    //[SerializeField]
+    //reference à l'affichage textuel des pièces des équipes
     [SerializeField]  Text coinsTextTeam1 ;
     [SerializeField]  Text coinsTextTeam2 ;
 
@@ -64,7 +65,7 @@ public class Character_AI : LeadManagement
     public Group grp;
 
 
-
+    /*importe les données du personnages*/
     public void importData()
     {
         nom = datachara.charaName;
@@ -75,8 +76,10 @@ public class Character_AI : LeadManagement
         health = maxHealth;
     }
 
+    /*test si le personnage est un leader ou non*/
     public bool leaderOrNot() { return isLeader; }
 
+    /*  */
     public void makeLeaderOrNot(bool leader)
     {
         if (!this.grp.HasGroup())
@@ -85,8 +88,10 @@ public class Character_AI : LeadManagement
         }
     }
 
+    /* modifie l'id du personnage */
     public void setId(int id) { this.id = id; }
 
+    /* récupère un allié grâce à son id */
     public GameObject getAlly(int identity)
     {
         foreach (GameObject obj in Allies)
@@ -102,6 +107,7 @@ public class Character_AI : LeadManagement
 
     }
 
+    /*Récupère un ennemi proche*/
     public GameObject GetEnemy()
     {
         List<GameObject> enemies = this.lead.getEnnemies();
@@ -151,6 +157,7 @@ public class Character_AI : LeadManagement
         return boitAuLettre;
     }
 
+    /*Fonction permettant de deplacer le personnage vers une position en animant ses mouvements */
     private void Move(Vector3 position)
     {
         animator.SetBool("isAttacking", false);
@@ -177,6 +184,7 @@ public class Character_AI : LeadManagement
         //HealthBar
         healthbar.SetMaxHealth( (int)maxHealth );
 
+        //repérer la tour ennemi
         if (agent.CompareTag("Team1"))
         {
             towerEnemy = GameObject.FindGameObjectWithTag("Tower2");
@@ -191,12 +199,12 @@ public class Character_AI : LeadManagement
             respawnPoint = GameObject.Find("RespawnPoint2");
         }
 
+        //importer les données du personnages
         if (datachara != null)
             importData();
         
-        localLetterBox = new List<Message>();
-        
-        
+        //Initialiser la boitre au lettre locale
+        localLetterBox = new List<Message>();  
         localLetterBox = ReceiveMessage();
 
     }
@@ -218,7 +226,9 @@ public class Character_AI : LeadManagement
         BuyHealthTeam();
 
         
-        
+        /*
+         Gestion de l'attaque du personnage
+         */
         if (target != null)
         {
             Distance = Vector3.Distance(transform.position, target.transform.position);
@@ -245,7 +255,11 @@ public class Character_AI : LeadManagement
         }
         else { playerInAttackRange = true; }
 
-        //Check for sight and attack range
+
+        /*
+         * Check for sight and attack range
+         * Definit les actions du personnages et ses priorités
+         */
         
         if (!playerInSightRange && !playerInAttackRange) GoToTower();
 
@@ -253,6 +267,7 @@ public class Character_AI : LeadManagement
 
         if (playerInAttackRange && playerInSightRange) Attack();
 
+        //Gestion de contournement des pillules rouges non fonctionnelle
         /*if (Avoid_zone.Count != 0)
         {
 
@@ -282,6 +297,11 @@ public class Character_AI : LeadManagement
     }
 
 
+    /*
+     Gestion de la priorité de la santé: 
+    Se dirige vers une pilule verte connue via la messagerie si le personnage possède peu de vie. 
+    Rajoute la position d'une pilule rouge connue via la messagerie dans l'avoid zone
+     */
     private void GoToHealth()
     {
         foreach (Message m in localLetterBox)
@@ -324,6 +344,9 @@ public class Character_AI : LeadManagement
         }
     }
     
+    /*
+     Fonction qui demande de l'aide aux alliés via la messagerie 
+     */
     void AskForHelp()
     {
         if (target != null)
@@ -345,6 +368,9 @@ public class Character_AI : LeadManagement
 
     }
 
+    /*
+     Fonction qui fait deplacer le personnage vers la l'allié qui a demandé de l'aide via la messagerie 
+     */
     void GiveHelp()
     {
         if (localLetterBox != null )
@@ -365,7 +391,9 @@ public class Character_AI : LeadManagement
         else GoToTower();
     }
 
-
+    /*
+     * Fonction qui rajoute un membre dans le groupe 
+     */
     void AddMember(GameObject any)
     {
         if (any != null)
@@ -379,6 +407,9 @@ public class Character_AI : LeadManagement
         }
     }
 
+    /*
+     Fonction qui enlève un membre du groupe 
+     */
     void RemoveMember(GameObject any)
     {
         if (any != null)
@@ -393,7 +424,9 @@ public class Character_AI : LeadManagement
         
     }
 
-    
+    /*
+     Fonction qui crée un groupe
+     */
     void CreateGroup()
     {
         
@@ -412,6 +445,9 @@ public class Character_AI : LeadManagement
         }
     }
 
+    /*
+     Fonction permettant à un groupe de suivre une même cible 
+     */
     void FollowTeamTarget()
     {
         if(this.grp.HasGroup() && this.isLeader)
@@ -429,7 +465,11 @@ public class Character_AI : LeadManagement
     }
 
     
-    //Items Coins touched
+    /*
+     *Fonction permettant de gerer le comportement lorsque le personnage touche un item:
+     *il envoie un message si c'est une pillule avec le sujet adapté.
+     *On augmente le nombre de pièce de l'équipe si c'est une pièce
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Coin"))
@@ -484,6 +524,10 @@ public class Character_AI : LeadManagement
 
     }
 
+    
+    /*
+     Fonction permettant le regain de santé de toute l'équipe s'il atteint un certain nombre de pièce
+     */
     private void BuyHealthTeam()
     {
         if( agent.CompareTag("Team1") && coinsTeam1 >=500)
@@ -509,6 +553,8 @@ public class Character_AI : LeadManagement
 
     }
 
+
+    /*Fonction permettant au personnage de se dirriger vers la tour */
     private void GoToTower()
     {
         
@@ -532,6 +578,7 @@ public class Character_AI : LeadManagement
     }
 
 
+    /* Fonction permettant au personnage d'attaquer la tour */
     private void AttackTower(GameObject tower)
     {
         animator.SetBool("isRunning", false);
@@ -558,6 +605,7 @@ public class Character_AI : LeadManagement
         }
     }
 
+    /*Fonction permettant de suivre une cible */
     private void Chase()
     {
         if (target != null)
@@ -568,10 +616,9 @@ public class Character_AI : LeadManagement
     }
 
 
+    /* Fonction permettant au personnage d'attaquer */
     private void Attack()
-    {
-        Debug.Log("bug");
-        
+    {    
         animator.SetBool("isRunning", false);
         agent.ResetPath();
 
@@ -600,12 +647,14 @@ public class Character_AI : LeadManagement
         }
     }
 
+    /*Fonction permettant au personnage d' annuler une attaque */
     private void ResetAttack()
     {
         alreadyAttacked = false;
         animator.SetBool("isAttacking", false);
     }
 
+    /*Fonction permettant au personnage de perdre de la vie */
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -622,6 +671,8 @@ public class Character_AI : LeadManagement
         health = initial_health;
 
     }
+
+    /*Fonction permettant au personnage de mourir*/
 
     private void DestroyEnemy()
     {

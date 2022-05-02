@@ -2,12 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class BillboardHealth : MonoBehaviour
 {
-    public Transform cam; //la camera
+    //reference vers la camera
+    public Transform cam; 
 
-    // Update is called once per frame
-    void LateUpdate() //pour suivre la caméra
+    /*
+     LateUpdate is called once per frame
+     Fonction permettant de toujours positionner l'objet face à la caméra 
+    */
+    void LateUpdate()
     {
         transform.LookAt(transform.position + cam.forward);
         

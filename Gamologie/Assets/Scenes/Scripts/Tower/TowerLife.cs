@@ -10,21 +10,27 @@ public class TowerLife : MonoBehaviour
     //health bar
     public HealthBar healthbar;
 
-      void Start()
+    /*
+     * Fonction qui initialise la vie maximal de HealthBar
+     */
+    void Start()
     {
-        //HealthBar
         healthbar.SetMaxHealth( (int)health );
     }
 
+    /*
+     Fonction qui met à jour l' Health Bar
+     */
     void Update()
     {
-        //Health Bar
         healthbar.SetHealth((int)health);
     }
 
 
-
-        public void TakeDamage(int damage)
+    /*
+     * diminue la vie de la tour
+     * */
+    public void TakeDamage(int damage)
     {
 
         health -= damage;
@@ -32,7 +38,9 @@ public class TowerLife : MonoBehaviour
         if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
     }
 
-
+    /*
+     * fonction qui detruit de la tour 
+     * */
     private void DestroyEnemy()
     {
 
