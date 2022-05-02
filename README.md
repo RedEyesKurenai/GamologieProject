@@ -1,7 +1,11 @@
 LIFPROJET SA1 - Groupe: Gamologie
+
 Doggy Wars : tactical RPG
+
 p1911202 : Erkan Aksoy
+
 p1925996 : Finaritra Randriamitandrina
+
 p1801885 : Badreddine Ouar
 
 =================== OBJECTIF ===================
@@ -13,6 +17,7 @@ Nous implémenterons une méthode de résolution distribuée avec des entités a
 
 
 =================== INSTALLATION ===================
+
 Pour éxécuter le projet, le logiciel Unity doit être installé.
 Lien: https://unity.com/download
 
@@ -30,29 +35,53 @@ Lorsqu'on ouvre Unity, à gauche de l'écran se trouve la hiérarchie des objets
 Voici les objets importants:
 
 Level: objet vide contenant environnement
+
      Plane: le plateau/sol 
+
      Trees: les arbres
+
 Main camera: la camera
+
 Canvas: objet vide contenant affichage textuel
+
      Coins1Text : affichage du nb de pièces récupérées par Team 1
+
      Coins2Text : par _ _ _ Team 2
+
 Teams: objet vide contenant les équipes
+
      Team1
+
           des Dog1: des personnages du soldat chien
+
                Canvas Life : objet vide
+
                     Health Bar : La barre de vie verte au-dessus  de leur tête
+
      Team2
+
           _ _ _  pareil
+
 Tower1
+
      Canvas Life :La barre de vie verte au-dessus de leur tête
+
 Tower2
+
      Canvas Life : La barre de vie verte au-dessus de leur tête
+
 Items: objet vide contenant les objets collectables
+
      Bonus Coins : objet vide contenant des zones de pièces
+
           Circle Coins: cercle des Pièces
+
      Bonus Healths : objet vide contenant des zones de pilules vertes
+
           Health line: ligne de pilules vertes
+
      Malus Healths : objet vide contenant des zones de poisons
+     
           Poison: groupe de poison
 
 
