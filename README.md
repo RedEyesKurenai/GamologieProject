@@ -34,55 +34,55 @@ Lorsqu'on ouvre Unity, à gauche de l'écran se trouve la hiérarchie des objets
 
 Voici les objets importants:
 
-- Level: objet vide contenant environnement
+     Level: objet vide contenant environnement
 
-     Plane: le plateau/sol 
+          Plane: le plateau/sol 
 
-     Trees: les arbres
+          Trees: les arbres
 
-Main camera: la camera
+     Main camera: la camera
 
-Canvas: objet vide contenant affichage textuel
+     Canvas: objet vide contenant affichage textuel
 
-     Coins1Text : affichage du nb de pièces récupérées par Team 1
+          Coins1Text : affichage du nb de pièces récupérées par Team 1
 
-     Coins2Text : par _ _ _ Team 2
+          Coins2Text : par _ _ _ Team 2
 
-Teams: objet vide contenant les équipes
+     Teams: objet vide contenant les équipes
 
-     Team1
+          Team1
 
-          des Dog1: des personnages du soldat chien
+               des Dog1: des personnages du soldat chien
 
-               Canvas Life : objet vide
+                    Canvas Life : objet vide
 
-                    Health Bar : La barre de vie verte au-dessus  de leur tête
+                         Health Bar : La barre de vie verte au-dessus  de leur tête
 
-     Team2
+          Team2
 
-          _ _ _  pareil
+               _ _ _  pareil
 
-Tower1
+     Tower1
 
-     Canvas Life :La barre de vie verte au-dessus de leur tête
+          Canvas Life :La barre de vie verte au-dessus de leur tête
 
-Tower2
+     Tower2
 
-     Canvas Life : La barre de vie verte au-dessus de leur tête
+          Canvas Life : La barre de vie verte au-dessus de leur tête
 
-Items: objet vide contenant les objets collectables
+     Items: objet vide contenant les objets collectables
 
-     Bonus Coins : objet vide contenant des zones de pièces
+          Bonus Coins : objet vide contenant des zones de pièces
 
-          Circle Coins: cercle des Pièces
+               Circle Coins: cercle des Pièces
 
-     Bonus Healths : objet vide contenant des zones de pilules vertes
+          Bonus Healths : objet vide contenant des zones de pilules vertes
 
-          Health line: ligne de pilules vertes
+               Health line: ligne de pilules vertes
 
-     Malus Healths : objet vide contenant des zones de poisons
+          Malus Healths : objet vide contenant des zones de poisons
 
-          Poison: groupe de poison
+               Poison: groupe de poison
 
 
 =================== SCRIPTS ===================
